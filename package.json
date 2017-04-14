@@ -9,10 +9,14 @@
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
+    "eis-thinking": "git+https://github.com/FiveLoadWheels/eis-thinking.git",
     "ejs": "~2.5.6",
     "express": "~4.15.2",
     "morgan": "~1.8.1",
     "sequelize": "^3.30.4",
     "serve-favicon": "~2.4.2"
+  },
+  "devDependencies": {
+    "@types/jquery": "^2.0.41"
   }
 }
