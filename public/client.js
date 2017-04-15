@@ -1,6 +1,14 @@
 /// <reference types="jquery" />
 
-$(document).on('submit', '.OrderPage form.handleOrder', (e) => {
+let app = $('#app');
+
+app.on('keyup', '.OrderPage .inputOrderId', (e) => {
+    if (e.keyCode === 13) {
+        location.href = '/order/view/' + e.target.value + '?filter=1';
+    }
+});
+
+app.on('submit', '.OrderPage form.handleOrder', (e) => {
     e.preventDefault();
     let form = e.target;
     let action = form.dataset.action;

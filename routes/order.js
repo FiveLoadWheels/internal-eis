@@ -8,19 +8,33 @@ var { OrderStatus } = datatypes;
 let orders = {
     '23': createFakeOrder('23', OrderStatus.DeliveryStarted),
     '25': createFakeOrder('25', OrderStatus.DeliveryStarted),
-    '28': createFakeOrder('28', OrderStatus.ProcessFinished)
+    '28': createFakeOrder('28', OrderStatus.ProcessFinished),
+    '32': createFakeOrder('32', OrderStatus.DeliveryStarted),
+    '35': createFakeOrder('35', OrderStatus.DeliveryStarted),
+    '38': createFakeOrder('38', OrderStatus.ProcessFinished),
+    '46': createFakeOrder('46', OrderStatus.ProcessFinished),
+    '47': createFakeOrder('47', OrderStatus.ProcessFinished),
+    '49': createFakeOrder('49', OrderStatus.ProcessFinished),
+    '50': createFakeOrder('50', OrderStatus.ProcessFinished),
+    '51': createFakeOrder('51', OrderStatus.DeliveryStarted),
+    '53': createFakeOrder('53', OrderStatus.ProcessFinished),
+    '55': createFakeOrder('55', OrderStatus.DeliveryStarted),
 }
 
 
 router.get('/view/:id', (req, res) => {
     let order = orders[req.params.id];
     res.render('order', {
+        title: 'Order #' + order.id,
         orderPage: {
-            objectives: Object.values(orders).map(o => getOrderState(o)),
+            objectives: req.query.filter ?
+                [getOrderState(order)] :
+                Object.values(orders).map(o => getOrderState(o)).filter(o => matchRole(o, 'Logistics')),
             order: getOrderState(order),
             currentObj: req.params.id,
-            OrderStatus
-        }
+            OrderStatus,
+        },
+        _query: req.query
     });
 });
 
@@ -110,5 +124,14 @@ function getAvailableActions(status) {
         return [];
     default:
         return [];
+    }
+}
+
+function matchRole(o, role) {
+    switch (role) {
+    case 'Logistics':
+        return o.status >= OrderStatus.ProcessFinished && o.status <= OrderStatus.DeliveryStarted;
+    default:
+        return false;
     }
 }
