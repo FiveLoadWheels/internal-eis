@@ -15,8 +15,8 @@ router.get('/view/:id', (req, res) => {
         productPage: {
             objectives: req.query.filter ?
                 [getProductState(product)] :
-                products.map(o => getOrderState(o)).filter(o => matchRole(o, 'Production')),
-            product: getOrderState(product),
+                products.map(o => getProductState(o)).filter(o => matchRole(o, 'Production')),
+            product: getProductState(product),
             ProductStatus,
         },
         _query: req.query
@@ -56,7 +56,7 @@ module.exports = router;
 /** 
  * @param {datatypes.IOrder} order 
  */
-function getOrderState(product) {
+function getProductState(product) {
     return Object.assign({
         statusName: ProductStatus[product.status],
         availableActions: getAvailableActions(product.status)
@@ -67,11 +67,11 @@ function getAvailableActions(status) {
     switch (status) {
     
     case ProductStatus.Initialized:
-        return [ { id: 'update-accessory', viewName: 'Update Accessory Status' } ];
+        return [ { id: 'UPDATE_ACCESSORY', viewName: 'Update Accessory Status' } ];
     case ProductStatus.ComponentEnsured:
-        return [ { id: 'complete-assembly', viewName: 'Complete Assembly' } ];
+        return [ { id: 'COMPLETE_ASSEMBLY', viewName: 'Complete Assembly' } ];
     case ProductStatus.AssemblyCompleted:
-        return [ { id: 'pass-checking', viewName: 'Pass Checking' } ];
+        return [ { id: 'PASS_CHECKING', viewName: 'Pass Checking' } ];
     case ProductStatus.Ready:
         return [];
     default:

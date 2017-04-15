@@ -64,11 +64,11 @@ function getAvailableActions(status) {
         return [];
     case OrderStatus.ProcessFinished:
         return [
-            { id: 'start-delivery', viewName: 'Start Delivery' }
+            { id: 'START_DELIVERY', viewName: 'Start Delivery' }
         ];
     case OrderStatus.DeliveryStarted:
         return [
-            { id: 'end-delivery', viewName: 'End Delivery' }
+            { id: 'END_DELIYERY', viewName: 'End Delivery' }
         ];
     case OrderStatus.DeliveryFinished:
         return [];
