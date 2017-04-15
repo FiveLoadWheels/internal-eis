@@ -11,6 +11,7 @@ const { R_OK } = fs.constants;
 var index = require('./routes/index');
 var users = require('./routes/users');
 var order = require('./routes/order');
+var product = require('./routes/product');
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/order', order);
+app.use('/product', product);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
