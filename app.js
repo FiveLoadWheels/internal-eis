@@ -4,6 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var ejs = require('ejs');
+var fs = require('fs');
+const { R_OK } = fs.constants;
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -12,7 +15,23 @@ var order = require('./routes/order');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+let viewDir = path.join(__dirname, 'views');
+app.set('views', viewDir);
+app.engine('ejs', (filePath, options, callback) => {
+  fs.access(viewDir + '/layout.ejs', R_OK, (err) => {
+    if (err) {
+      ejs.renderFile(filePath, options, callback);
+    }
+    else {
+      ejs.renderFile(filePath, options, (err, content) => {
+        if (err) return callback(err);
+        ejs.renderFile(viewDir + '/layout.ejs',
+          Object.assign({ body: content }, options), callback)
+      });
+    }
+
+  });
+})
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
