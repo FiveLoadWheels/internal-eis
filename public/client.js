@@ -2,7 +2,7 @@
 
 let app = $('#app');
 
-app.on('keyup', '.OrderPage .inputOrderId', (e) => {
+app.on('keyup', '.OrderPage .getById', (e) => {
     if (e.keyCode === 13) {
         location.href = '/order/view/' + e.target.value + '?filter=1';
     }
