@@ -34,10 +34,10 @@
 
         <div class="title">Objectives</div>
         <% productPage.objectives.forEach(function(obj) { %>
-            <div class="objective" style="<%= productPage.currentObj === obj.id ? 'background: #f1f1f1;': '' %>">
+            <div class="objective" style="<%= productPage.product.id === obj.id ? 'background: #f1f1f1;': '' %>">
                 <a href="/product/view/<%= obj.id %>">
                     <span class="glyphicon glyphicon-tasks"></span>
-                    <% if (productPage.currentObj === obj.id) { %>
+                    <% if (productPage.product.id === obj.id) { %>
                         <b>Product #<%= obj.id %></b>
                     <% } else { %>
                         Product #<%= obj.id %>

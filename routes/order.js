@@ -15,7 +15,6 @@ router.get('/view/:id', (req, res) => {
                 [getOrderState(order)] :
                 orders.map(o => getOrderState(o)).filter(o => matchRole(o, 'Logistics')),
             order: getOrderState(order),
-            currentObj: req.params.id,
             OrderStatus,
         },
         _query: req.query

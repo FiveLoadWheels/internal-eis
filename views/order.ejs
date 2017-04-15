@@ -34,10 +34,10 @@
 
         <div class="title">Objectives</div>
         <% orderPage.objectives.forEach(function(obj) { %>
-            <div class="objective" style="<%= orderPage.currentObj === obj.id ? 'background: #f1f1f1;': '' %>">
+            <div class="objective" style="<%= orderPage.order.id === obj.id ? 'background: #f1f1f1;': '' %>">
                 <a href="/order/view/<%= obj.id %>">
                     <span class="glyphicon glyphicon-tasks"></span>
-                    <% if (orderPage.currentObj === obj.id) { %>
+                    <% if (orderPage.order.id === obj.id) { %>
                         <b>Order #<%= obj.id %></b>
                     <% } else { %>
                         Order #<%= obj.id %>

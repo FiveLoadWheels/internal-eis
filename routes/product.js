@@ -17,7 +17,6 @@ router.get('/view/:id', (req, res) => {
                 [getProductState(product)] :
                 products.map(o => getOrderState(o)).filter(o => matchRole(o, 'Production')),
             product: getOrderState(product),
-            currentObj: req.params.id,
             ProductStatus,
         },
         _query: req.query
