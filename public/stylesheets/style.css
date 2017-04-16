@@ -23,6 +23,8 @@ a {
 	/*padding: 10px 0;*/
 	line-height: 1.45;
 	/*font-family: "Comic Sans MS";*/
+	width: 100%;
+	position: fixed;
 }
 
 /*.nav-main > :nth-child(1) {
@@ -110,4 +112,13 @@ html, body, #app {
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
+}
+
+.clearfix::before, .clearfix::after {
+    content: "";
+    display: table;
+}
+
+.clearfix::after {
+    clear: both;
 }
