@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var datatypes = require('eis-thinking/lib/datatypes');
-var { handleOrder } = require('eis-thinking/lib/handle-order');
-var { handleProduct } = require('eis-thinking/lib/handle-product');
+var { handleOrder, handleProduct, datatypes } = require('eis-thinking');
 var { OrderStatus, ProductStatus } = datatypes;
 
 var orders = require('../data/__fake').orders;
