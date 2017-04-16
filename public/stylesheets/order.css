@@ -1,0 +1,20 @@
+.clearfix::before, .clearfix::after {
+    content: "";
+    display: table;
+}
+
+.clearfix::after {
+    clear: both;
+}
+
+.OrderPage {
+    width: 100%;
+    overflow: hidden;
+}
+
+.OrderPage > .sidebar,
+.OrderPage > .content {
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 5%;
+}

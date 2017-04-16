@@ -2,107 +2,12 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="/stylesheets/style.css">
         <link rel="stylesheet"
             href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
             integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
             crossorigin="anonymous">
         <title><%= typeof title === 'string' ? title + ' - EISMan' : 'EISMan' %></title>
-        <style>
-            * {
-                box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-            }
-            
-            .nav-main {
-                /*background: #478900;*/
-                color: #666;
-                background: #f1f1f1;
-                /*padding: 10px 0;*/
-                line-height: 1.45;
-                /*font-family: "Comic Sans MS";*/
-            }
-
-            /*.nav-main > :nth-child(1) {
-                padding-left: 0px;
-            }*/
-
-            body {
-                margin: 0;
-                padding: 0;
-            }
-
-            ul {
-                padding-left: 10px;
-            }
-
-            li {
-                list-style-type: none;
-                /*margin-left: 4px;*/
-            }
-
-            * {
-                border-radius: 0 !important;
-            }
-
-            a {
-                color: #2289ab;
-            }
-
-            .n_nav-item {
-                float: left;
-                padding: 10px 15px;
-            }
-
-            .n_nav-item:hover {
-                background: rgba(0,0,0,0.3);
-                color: #f1f1f1;
-            }
-
-            .login-form > * {
-                margin-top: 5px;
-            }
-
-            h1,h2,h3,h4,h5,h6 {
-                color: #555;
-            }
-
-            .title {
-                margin-top: 15px;
-                color: #555;
-                font-weight: bolder;
-                font-size: 1.2em;
-                clear: left;
-            }
-
-            .subtitle {
-                padding: 5px 0;
-                color: #575
-            }
-
-            .content {
-                /*background: #fefefe;*/
-                border-left: #f1f1f1 solid 2px;
-                height: 100%;
-            }
-
-            .sidebar {
-                /*background: #fbfcfb;*/
-                padding: 0;
-            }
-
-            .sidebar > * {
-                padding: 0 15px;
-            }
-
-            .objective {
-                padding-top: 5px;
-                padding-bottom: 1px;
-            }
-
-            .card {
-                padding-left: 5px;
-            }
-        </style>
     </head>
 
     <body>
