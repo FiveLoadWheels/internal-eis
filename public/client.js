@@ -40,7 +40,8 @@ function buildActionForm(app, controller, baseRoute) {
         let action = form.dataset.action;
         let payload = {};
         Array.from($(form).find('input[action-payload]')).forEach(el => {
-            payload[el.name] = el.value;
+            let dataType = JSONTypes[el.dataset.type];
+            payload[el.name] = dataType(el.value);
         });
 
         postJson(`/${baseRoute}/handle/` + form.dataset.id, { type: action, payload })
@@ -54,4 +55,11 @@ function buildActionForm(app, controller, baseRoute) {
             // store.dispatch({ action: 'HANDLE_FAIL' });
         })
     });
+}
+
+var JSONTypes = {
+    String: String,
+    Number: Number,
+    Boolean: Boolean,
+    DateTime: Date.parse.bind(Date)
 }
