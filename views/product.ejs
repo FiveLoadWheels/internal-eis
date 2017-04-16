@@ -2,8 +2,12 @@
     function addSpace(str) {
         return str.replace(/([A-Z])/g, ' $1').trim();
     }
+
+    function actionTypeToId(type) {
+        return type.toLowerCase().replace(/_/g, '-');
+    }
 %>
-<div class="productPage" full-height>
+<div class="ProductPage" full-height>
     <div class="nav-main col-xs-12">
         <div class="n_nav-item" style="color: #999; font-weight: bolder">
             EISMan
@@ -113,7 +117,8 @@
     productPage.product.availableActions.map(a => {
         try {
             return include('modal-layout', {
-                body: include(`product-forms/${actionTypeToId(a.id)}`, { id: orderPage.order.id })
+                viewId: actionTypeToId(a.id),
+                body: include(`product-forms/${actionTypeToId(a.id)}`, { id: productPage.product.id })
             });
         }
         catch (e) {
