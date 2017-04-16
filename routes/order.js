@@ -68,7 +68,7 @@ function getAvailableActions(status) {
         ];
     case OrderStatus.DeliveryStarted:
         return [
-            { id: 'END_DELIYERY', viewName: 'End Delivery' }
+            { id: 'END_DELIVERY', viewName: 'End Delivery' }
         ];
     case OrderStatus.DeliveryFinished:
         return [];
