@@ -34,7 +34,7 @@ function buildGetById(app, controller, baseRoute) {
 }
 
 function buildActionForm(app, controller, baseRoute) {
-    app.on('submit', `.${controller} form.handleOrder`, (e) => {
+    app.on('submit', `.${controller} form.handleAction`, (e) => {
         e.preventDefault();
         let form = e.target;
         let action = form.dataset.action;
