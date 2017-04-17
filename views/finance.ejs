@@ -2,12 +2,34 @@
 <div class="OrderPage clearfix" full-height>
     <div class="FilterItem">
         <h3>Quick Seach Records:</h3>
-        <form>
-            <label>Time: from</label>
-            <input type="date" name="StartTime" />
-            <label>to</label>
-            <input type="date" name="EndTime" />
-        </form>
+        <div class="FirstCol col-xs-4">
+            <form class="form-group">
+                <label>From: </label>
+                <input type="date" name="StartTime" />
+                <label>To: </label>
+                <input type="date" name="EndTime" />
+            </form>
+        </div>
+        <div class="SecondCol col-xs-4">
+            <form class="form-group">
+                <label>Type: </label>
+                <select name="type">
+                    <option value="sales">Sales</option>
+                    <option value="salary">Salary</option>
+                    <option value="debt">Debt</option>
+                    <option value="expense">Expense</option>
+                    <option value="promotion">Promotion</option>
+                    <option value="other">Other</option>
+                </select>
+            </form>
+        </div>
+        <div class="ThirdCol col-xs-4">
+            <form class="form-group">
+                <label>Amount: </label>
+                <input type="number" name="amount" />
+            </form>
+        </div>
+            
     </div>
 
     <div class="content">
