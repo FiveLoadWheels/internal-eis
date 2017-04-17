@@ -3,3 +3,22 @@
     overflow: hidden;
     padding-top: 4%;
 }
+
+form > div {
+    padding: 2% 0px;
+}
+
+/*div > h4 {
+    text-align: center;
+    margin-top: 8%;
+    margin-bottom: 12%;
+}*/
+
+div > .title {
+    margin-bottom: 2%;
+}
+
+.siderbar button {
+    margin-top: 15%;
+    float: right;
+}

@@ -1,38 +1,106 @@
-<link rel="stylesheet" href="/stylesheets/order.css">
-<div class="OrderPage clearfix" full-height>
-    <div class="FilterItem">
-        <h3>Quick Seach Records:</h3>
-        <div class="FirstCol col-xs-4">
-            <form class="form-group">
-                <label>From: </label>
-                <input type="date" name="StartTime" />
-                <label>To: </label>
-                <input type="date" name="EndTime" />
-            </form>
-        </div>
-        <div class="SecondCol col-xs-4">
-            <form class="form-group">
-                <label>Type: </label>
-                <select name="type">
-                    <option value="sales">Sales</option>
-                    <option value="salary">Salary</option>
-                    <option value="debt">Debt</option>
-                    <option value="expense">Expense</option>
-                    <option value="promotion">Promotion</option>
-                    <option value="other">Other</option>
-                </select>
-            </form>
-        </div>
-        <div class="ThirdCol col-xs-4">
-            <form class="form-group">
-                <label>Amount: </label>
-                <input type="number" name="amount" />
-            </form>
-        </div>
+<link rel="stylesheet" href="/stylesheets/finance.css">
+<div class="FinancePage clearfix" full-height>
+    <div class="siderbar col-xs-3">
+        <div class="title">Quick Seach: </div>
+        <form class="form-horizontal clearfix">
+            <div class="form-group-sm clearfix">
+                <label for="id" class="control-label col-xs-2">ID: </label>
+                <div class="col-xs-10">
+                    <div class="input-group">
+                        <div class="input-group-addon">#</div>
+                        <input type="text" class="form-control" name="id" />
+                    </div>
+                </div>
+            </div>
             
+            <div class="form-group-sm clearfix">
+                <label for="StartTime" class="control-label col-xs-2">From: </label>
+                <div class="col-xs-10">
+                    <input type="date" class="form-control" name="StartTime" />
+                </div>
+            </div>
+
+            <div class="form-group-sm clearfix">
+                <label for="EndTime" class="control-label col-xs-2">To: </label>
+                <div class="col-xs-10">
+                    <input type="date" class="form-control" name="EndTime" />
+                </div>
+            </div>
+
+            <div class="form-group-sm clearfix">
+                <label for="type" class="control-label col-xs-2">Type: </label>
+                <div class="col-xs-10">
+                    <select name="type" class="form-control">
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="sales">Sales</option>
+                        <option value="OtherIncome">Other Type of Income</option>
+                        <option value="salary">Salary</option>
+                        <option value="debt">Debt</option>
+                        <option value="expense">Expense</option>
+                        <option value="promotion">Promotion</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>   
+            </div>
+
+            <div class="form-group-sm clearfix">
+                <label for="StartAmount" class="control-label col-xs-2">From: </label>
+                <div class="col-xs-10">
+                    <div class="input-group">
+                        <div class="input-group-addon">$</div>
+                        <input type="number" class="form-control" name="StartAmount" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group-sm clearfix">
+                <label for="EndAmount" class="control-label col-xs-2">To: </label>
+                <div class="col-xs-10">
+                    <div class="input-group">
+                        <div class="input-group-addon">$</div>
+                        <input type="number" class="form-control" name="EndAmount" />
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-default btn-sm" name="SubmitFilter">Submit</button>
+        </form>
     </div>
 
-    <div class="content">
+    <div class="content col-xs-9">
+        <h1>Transaction Records:</h1>
 
+        <h2>Manipulation</h2>
+        <div class="subtitle">
+                Create Records From <b>the below button</b>
+        </div>
+        <div class="card">
+            <button type="button" class="btn btn-primary" name="create">Create Record</button>
+        </div>
+
+        <h2>Records</h2>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <td>#</td>
+                    <td>Time</td>
+                    <td>Amount</td>
+                    <td>Description</td>
+                    <td>Manipulate</td>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>a</td>
+                        <td>b</td>
+                        <td>c</td>
+                        <td>12345</td>
+                        <td>
+                            <a href="">Modify</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
