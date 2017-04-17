@@ -46,13 +46,19 @@ function buildActionForm(app, controller, baseRoute) {
 
         postJson(`/${baseRoute}/handle/` + form.dataset.id, { type: action, payload })
         .then(result => {
+            if (result.err) {
+                throw result.err;
+            }
             console.log(result);
             // store.dispatch({ action: 'HANDLE_COMPLETE' });
+            alert('Action completed.');
             location.reload();
         })
         .catch(err => {
             console.error(err);
+            alert('ActionError: ' + err);
             // store.dispatch({ action: 'HANDLE_FAIL' });
+
         })
     });
 }

@@ -1,6 +1,7 @@
 var datatypes = require('eis-thinking/lib/datatypes');
 var { handleOrder } = require('eis-thinking/lib/handle-order');
-var { OrderStatus, ProductStatus } = datatypes;
+var { OrderStatus, ProductStatus, PersonnelRole } = datatypes;
+var { sha1 } = require('../utils');
 
 // faking
 
@@ -27,8 +28,14 @@ let orders = [
     createFakeOrder(55, OrderStatus.DeliveryStarted, products.slice()),
 ];
 
+let personnel = [
+    createPersonnel(400132, '1008611', 'Kai-shek', 'Chiang', PersonnelRole.Logistics),
+
+];
+
 exports.products = products;
 exports.orders = orders;
+exports.personnel = personnel;
 
 
 
@@ -73,3 +80,14 @@ function createFakeProduct(id, status, oid) {
     }
 }
 
+function createPersonnel(id, password, firstName, lastName, role) {
+    return {
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        lastLogin: Date.now(),
+        tel: '000-0000000',
+        password: sha1(password),
+        role: role
+    }
+}

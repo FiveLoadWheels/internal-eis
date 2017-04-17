@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var ejs = require('ejs');
 var fs = require('fs');
 const { R_OK } = fs.constants;
@@ -42,8 +43,27 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({
+  secret: 'eis 123456 78',
+  resave: true, 
+  saveUninitialized: true
+}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// TODO: Dirty patch!!!!
+let PersonnelRole = require('eis-thinking').datatypes.PersonnelRole;
+app.use((req, res, next) => {
+  let render = res.render;
+  res.render = function newRender(filePath, options, callback) {
+    render.call(res, filePath, Object.assign({}, options, {
+      req,
+      PersonnelRole
+    }), callback);
+  };
+
+  next();
+});
 
 app.use('/', index);
 app.use('/users', users);

@@ -22,8 +22,13 @@
                 </div>
                 
                 <div class="n_nav-item pull-right">
-                    <span class="glyphicon glyphicon-user"></span>
-                    Jacky Chen(Production Department)
+                    <% if (req.session.user) { 
+                        let user = req.session.user; %>
+                        <span class="glyphicon glyphicon-user"></span>
+                        <%= `${user.firstName} ${user.lastName} (${PersonnelRole[user.role]} Department)` %>
+                    <% } else { %>
+                        <a href="/personnel/login">Login</a>
+                    <% } %>
                 </div>
             </div>
 
