@@ -102,6 +102,7 @@
         try {
             return include('modal-layout', {
                 viewId: actionTypeToId(a.id),
+                viewName: a.viewName,
                 body: include(`product-forms/${actionTypeToId(a.id)}`, { id: productPage.product.id })
             });
         }
