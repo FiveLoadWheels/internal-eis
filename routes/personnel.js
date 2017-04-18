@@ -34,7 +34,17 @@ router.post('/handle/:id', (req, res) => {
     case 'DELETE_USER':
 
     break;
+
+    case 'ADD_USER':
+
+    break;
     }
-})
+});
+
+// router.post('/handle/:id', (req, res) => {
+//     let user = users.find(u => u.id === Number(req.params.id));
+//     let action = req.body;
+//     action.type = 'ADD_USER';
+// })
 
 module.exports = router;
