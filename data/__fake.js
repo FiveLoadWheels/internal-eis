@@ -30,6 +30,7 @@ let orders = [
 
 let personnel = [
     createPersonnel(400132, '1008611', 'Kai-shek', 'Chiang', PersonnelRole.Logistics),
+    createPersonnel(400135, '1008611', 'Nick', 'Ng', PersonnelRole.Production)
 
 ];
 
