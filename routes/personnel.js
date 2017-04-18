@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var { sha1 } = require('../utils');
 
-var personnel = require('../data/__fake').personnel;
+var personnel = require('../storage/__fake').personnel;
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {

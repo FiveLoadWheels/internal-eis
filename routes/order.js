@@ -5,7 +5,7 @@ var { handleOrder, datatypes } = require('eis-thinking');
 var { OrderStatus, PersonnelRole } = datatypes;
 var { checkRole, isLogin } = require('./personnel');
 
-var orders = require('../data/__fake').orders;
+var orders = require('../storage/__fake').orders;
 
 var orderRole = checkRole(hasActableRole);
 // 屏蔽角色权限

@@ -3,8 +3,8 @@ var router = express.Router();
 var { handleOrder, handleProduct, datatypes } = require('eis-thinking');
 var { OrderStatus, ProductStatus } = datatypes;
 
-var orders = require('../data/__fake').orders;
-var products = require('../data/__fake').products;
+var orders = require('../storage/__fake').orders;
+var products = require('../storage/__fake').products;
 
 router.get('/view/:id', (req, res) => {
     let product = products.find(p => p.id === Number(req.params.id));
