@@ -17,10 +17,12 @@
       </thead> -->
       <% indexPage.operations.forEach(op => { %>
         <div style="font-size: 1.1em; border-top: #ddd solid 1px; padding: 20px 0">
-            <span><%= 'You' %></span>
-            <b><%= op.actionName %></b>
+            <span><%= 'You have performed ' %></span>
+            <b>"<%= op.actionName %>" </b>action 
             <span>for</span>
-            <b><%= op.targetTypeName + ' #' + op.targetId %></b>
+            <a href="<%= op.targetUrl %>">
+              <b><%= op.targetTypeName + ' #' + op.targetId %></b>
+            </a>
             <span>at</span>
             <b><%= (new Date(op.ctime)).toString() %></b>
         </div>

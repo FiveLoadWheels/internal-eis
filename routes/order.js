@@ -28,7 +28,10 @@ router.get('/view/:id', isLogin, (req, res) => {
 });
 
 router.post('/handle/:id',
-    (req, res, next) => { req.roleTarget = orders.find(o => o.id === Number(req.params.id)); next() },
+    (req, res, next) => {
+        // fetch order
+        req.roleTarget = orders.find(o => o.id === Number(req.params.id)); next()
+    },
     orderRole,
     checkPasswordConfirm,
     (req, res) => {
