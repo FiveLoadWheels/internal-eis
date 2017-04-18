@@ -70,8 +70,8 @@ app.use((req, res, next) => {
 
 app.get('/debug', (req, res) => {
   res.type('application/json');
-  res.send(JSON.stringify(require('./data/__fake'), null, 4));
-})
+  res.send(JSON.stringify(require('./storage/__fake'), null, 4));
+});
 
 app.use('/', index);
 app.use('/user', user);

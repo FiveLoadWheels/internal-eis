@@ -11,17 +11,17 @@
 
         <div id="app">
             <div class="nav-main">
-                <div class="n_nav-item" style="color: #999; font-weight: bolder">
+                <a class="n_nav-item" href="/" style="font-weight: bolder">
                     EISMan
-                </div>
-                <div class="n_nav-item">
+                </a>
+                <a class="n_nav-item">
                     Global Status
-                </div>
-                <div class="n_nav-item">
+                </a>
+                <a class="n_nav-item">
                     Help
-                </div>
+                </a>
                 
-                <div class="n_nav-item pull-right">
+                <a class="n_nav-item pull-right">
                     <% if (req.session.user) { 
                         let user = req.session.user; %>
                         <span class="glyphicon glyphicon-user"></span>
@@ -29,7 +29,7 @@
                     <% } else { %>
                         <a href="/personnel/login">Login</a>
                     <% } %>
-                </div>
+                </a>
             </div>
 
             <%- body %>

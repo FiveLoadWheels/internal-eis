@@ -54,12 +54,17 @@ a {
 }
 
 .n_nav-item {
+	display: block;
+	color: #000000;
+	text-decoration: none;
 	float: left;
 	padding: 10px 15px;
 }
 
 .n_nav-item:hover {
 	background: rgba(0,0,0,0.3);
+	background: #2289ab;
+	text-decoration: none;
 	color: #f1f1f1;
 }
 

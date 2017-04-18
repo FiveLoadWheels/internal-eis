@@ -84,16 +84,16 @@
             </table>
         </div>
     </div>
+
+    <%- include('modal-layout', {
+        viewId: 'modify-user',
+        viewName: 'Modify User',
+        body: include(`personnel-forms/modify-user`, { id: personnelPage.user.id, person: personnelPage.user })
+    }); %>
+
+    <%- include('modal-layout', {
+        viewId: 'delete-user',
+        viewName: 'Delete User',
+        body: include(`personnel-forms/delete-user`, { id: personnelPage.user.id })
+    }); %>
 </div>
-
-<%- include('modal-layout', {
-    viewId: 'modify-user',
-    viewName: 'Modify User',
-    body: include(`personnel-forms/modify-user`, { id: personnelPage.user.id, person: personnelPage.user })
-}); %>
-
-<%- include('modal-layout', {
-    viewId: 'delete-user',
-    viewName: 'Delete User',
-    body: include(`personnel-forms/delete-user`, { id: personnelPage.user.id })
-}); %>
