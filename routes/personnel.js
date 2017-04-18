@@ -12,4 +12,15 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/view/:id', (req, res) => {
+    let user = users.find(u => u.id === Number(req.params.id));
+    res.render('personnel', {
+        title: 'HR',
+        personnelPage: {
+            users: users,
+            user: user
+        }
+    })
+});
+
 module.exports = router;

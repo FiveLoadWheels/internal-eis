@@ -10,3 +10,7 @@
     overflow: auto;
     padding-bottom: 5%;
 }
+
+.sidebar button {
+    float: right;
+}
