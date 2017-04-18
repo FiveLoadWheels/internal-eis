@@ -28,15 +28,15 @@ let orders = [
     createFakeOrder(55, OrderStatus.DeliveryStarted, products.slice()),
 ];
 
-let personnel = [
-    createPersonnel(400132, '1008611', 'Kai-shek', 'Chiang', PersonnelRole.Logistics),
-    createPersonnel(400135, '1008611', 'Nick', 'Ng', PersonnelRole.Production)
+let users = [
+    createUser(400132, '1008611', 'Kai-shek', 'Chiang', PersonnelRole.Logistics),
+    createUser(400135, '1008611', 'Nick', 'Ng', PersonnelRole.Production)
 
 ];
 
 exports.products = products;
 exports.orders = orders;
-exports.personnel = personnel;
+exports.users = users;
 
 
 
@@ -81,7 +81,7 @@ function createFakeProduct(id, status, oid) {
     }
 }
 
-function createPersonnel(id, password, firstName, lastName, role) {
+function createUser(id, password, firstName, lastName, role) {
     return {
         id: id,
         firstName: firstName,

@@ -10,7 +10,7 @@ var fs = require('fs');
 const { R_OK } = fs.constants;
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var user = require('./routes/user');
 var order = require('./routes/order');
 var product = require('./routes/product');
 var finance = require('./routes/finance');
@@ -74,7 +74,7 @@ app.get('/debug', (req, res) => {
 })
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/users', user);
 app.use('/order', order);
 app.use('/product', product);
 app.use('/finance', finance);

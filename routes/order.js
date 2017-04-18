@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var { handleOrder, datatypes } = require('eis-thinking');
 var { OrderStatus, PersonnelRole } = datatypes;
-var { checkRole, isLogin } = require('./personnel');
+var { checkRole, isLogin } = require('./user');
 
 var orders = require('../storage/__fake').orders;
 
