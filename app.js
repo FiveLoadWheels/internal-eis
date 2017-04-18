@@ -74,7 +74,7 @@ app.get('/debug', (req, res) => {
 })
 
 app.use('/', index);
-app.use('/users', user);
+app.use('/user', user);
 app.use('/order', order);
 app.use('/product', product);
 app.use('/finance', finance);
