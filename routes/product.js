@@ -13,7 +13,7 @@ router.get('/view/:id', (req, res) => {
         productPage: {
             objectives: req.query.filter ?
                 [getProductState(product)] :
-                products.map(o => getProductState(o)).filter(o => matchRole(o, 'Production')),
+                products.map(o => getProductState(o)).filter(o => o.status >= ProductStatus.Initialized),
             product: getProductState(product),
             ProductStatus,
         },

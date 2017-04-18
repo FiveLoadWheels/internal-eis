@@ -1,11 +1,29 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<div class="IndexPage" style="overflow: auto; margin-top: 40px; height: 100%">
+  <div class="container" style="padding-top: 20px">
+    <h2>Welcome back, <%= req.session.user.firstName  %></h2>
+
+    <h3>Our Work</h3>
+
+    <h5>We have <%= indexPage.orderCount %> orders for <%= indexPage.dept %> now. Let's fight!</h5>
+    <a class="btn btn-default" href="/order/view/23">Show Proceeding Orders</a>
+
+    <h3>Your Footprint</h3>
+
+      <!-- <thead>
+        <th>Who</th>
+        <th>Action</th>
+        <th>For</th>
+        <th>At</th>
+      </thead> -->
+      <% indexPage.operations.forEach(op => { %>
+        <div style="font-size: 1.1em; border-top: #ddd solid 1px; padding: 20px 0">
+            <span><%= 'You' %></span>
+            <b><%= op.actionName %></b>
+            <span>for</span>
+            <b><%= op.targetTypeName + ' #' + op.targetId %></b>
+            <span>at</span>
+            <b><%= (new Date(op.ctime)).toString() %></b>
+        </div>
+      <% }) %>
+    </div>
+</div>

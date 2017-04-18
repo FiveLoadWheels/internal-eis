@@ -2,10 +2,10 @@
 var express = require('express');
 var router = express.Router();
 var { handleOrder, datatypes } = require('eis-thinking');
-var { OrderStatus, PersonnelRole } = datatypes;
+var { OrderStatus, PersonnelRole, OperationTarget } = datatypes;
 var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
-var orders = require('../storage/__fake').orders;
+var { orders, operations } = require('../storage/__fake');
 
 var orderRole = checkRole(hasActableRole);
 // 屏蔽角色权限
@@ -36,6 +36,13 @@ router.post('/handle/:id',
     let order = req.roleTarget;
     Promise.resolve(handleOrder(order, req.body))
     .then(() => {
+        operations.push({
+            uid: req.session.user.id,
+            targetId: order.id,
+            targetType: OperationTarget.Order,
+            action: JSON.stringify(req.body),
+            ctime: Date.now()
+        });
         // save order
         res.json({ error: null });
     })

@@ -36,6 +36,7 @@ let users = [
 exports.products = products;
 exports.orders = orders;
 exports.users = users;
+exports.operations = [];
 
 
 
