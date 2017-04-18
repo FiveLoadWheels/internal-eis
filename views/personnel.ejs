@@ -48,10 +48,10 @@
                 User Name: <b><%= personnelPage.user.firstName + ' ' + personnelPage.user.lastName%></b>
             </div>
 
-            <button class="btn btn-default" data-toggle="modal" data-target="">
+            <button class="btn btn-default" data-toggle="modal" data-target="#modify-user-modal">
                 Modify
             </button>
-            <button class="btn btn-default" data-toggle="modal" data-target="">
+            <button class="btn btn-default" data-toggle="modal" data-target="#delete-user-modal">
                 Delete
             </button>
         </div>
@@ -76,7 +76,7 @@
                         <td><%= personnelPage.user.firstName %></td>
                         <td><%= personnelPage.user.lastName %></td>
                         <td><%= personnelPage.user.ctime %></td>
-                        <td><%= personnelPage.user.role %></td>
+                        <td><%= PersonnelRole[personnelPage.user.role] %></td>
                         <td><%= personnelPage.user.salary %></td>
                         <td><%= personnelPage.user.tel %></td>
                     </tr>
@@ -85,3 +85,15 @@
         </div>
     </div>
 </div>
+
+<%- include('modal-layout', {
+    viewId: 'modify-user',
+    viewName: 'Modify User',
+    body: include(`personnel-forms/modify-user`, { id: personnelPage.user.id, person: personnelPage.user })
+}); %>
+
+<%- include('modal-layout', {
+    viewId: 'delete-user',
+    viewName: 'Delete User',
+    body: include(`personnel-forms/delete-user`, { id: personnelPage.user.id })
+}); %>
