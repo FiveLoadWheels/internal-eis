@@ -1,32 +1,51 @@
 var express = require('express');
 var router = express.Router();
 var { handleOrder, handleProduct, datatypes } = require('eis-thinking');
-var { OrderStatus, ProductStatus } = datatypes;
+var { OrderStatus, ProductStatus, PersonnelRole, OperationTarget } = datatypes;
+var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
-var orders = require('../storage/__fake').orders;
-var products = require('../storage/__fake').products;
+var { orders, products, operations } = require('../storage/__fake');
 
-router.get('/view/:id', (req, res) => {
+var productActableRole = checkRole(hasActableRole);
+
+router.get('/view/:id', isLogin, (req, res) => {
     let product = products.find(p => p.id === Number(req.params.id));
+    let user = req.session.user;
     res.render('product', {
         title: 'Product #' + product.id,
         productPage: {
             objectives: req.query.filter ?
-                [getProductState(product)] :
-                products.map(o => getProductState(o)).filter(o => o.status >= ProductStatus.Initialized),
-            product: getProductState(product),
+                [getProductState(product, user)] :
+                products.map(o => getProductState(o, user)).filter(o => o.status >= ProductStatus.Initialized),
+            product: getProductState(product, user),
             ProductStatus,
         },
         _query: req.query
     });
 });
 
-router.post('/handle/:id', (req, res) => {
+router.post('/handle/:id',
+    (req, res, next) => {
+        // fetch product
+        req.roleTarget = products.find(p => p.id === Number(req.params.id));
+        next();
+    },
+    productActableRole,
+    checkPasswordConfirm,
+    (req, res) => {
     console.log(req.body);
     // get order
     let product = products.find(p => p.id === Number(req.params.id));
     Promise.resolve(handleProduct(product, req.body))
     .then(() => {
+        // save operation record
+        operations.push({
+            uid: req.session.user.id,
+            targetId: product.id,
+            targetType: OperationTarget.Product,
+            action: JSON.stringify(req.body),
+            ctime: Date.now()
+        });
         // save product and get order
         console.log(`Order #${product.oid} of product #${product.id}`, orders.find(o => o.id === product.oid));
         return orders.find(o => o.id === product.oid);
@@ -55,15 +74,15 @@ module.exports = router;
 /** 
  * @param {datatypes.IOrder} order 
  */
-function getProductState(product) {
+function getProductState(product, user) {
     return Object.assign({
         statusName: ProductStatus[product.status],
-        availableActions: getAvailableActions(product.status)
+        availableActions: getAvailableActions(product, user)
     }, product);
 }
 
-function getAvailableActions(status) {
-    switch (status) {
+function getAvailableActions(product, user) {
+    switch (product.status) {
     
     case ProductStatus.Initialized:
         return [ { id: 'UPDATE_ACCESSORY', viewName: 'Update Accessory Status' } ];
@@ -78,9 +97,9 @@ function getAvailableActions(status) {
     }
 }
 
-function matchRole(o, role) {
+function hasActableRole(o, role) {
     switch (role) {
-    case 'Production':
+    case PersonnelRole.Production:
         return true;
     default:
         return false;
