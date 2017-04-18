@@ -88,7 +88,7 @@ function createUser(id, password, firstName, lastName, role) {
         lastLogin: Date.now(),
         ctime: Date.now(),
         mtime: Date.now(),
-        retireTime: null
+        retireTime: null,
         tel: '000-0000000',
         password: sha1(password),
         salary: 1234567890,
