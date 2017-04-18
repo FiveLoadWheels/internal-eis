@@ -87,10 +87,18 @@ function createUser(id, password, firstName, lastName, role) {
         lastName: lastName,
         lastLogin: Date.now(),
         ctime: Date.now(),
+<<<<<<< HEAD
         mtime: Date.now(),
         tel: '000-0000000',
         password: sha1(password),
         role: role,
         retireTime: null
     };
+=======
+        tel: '000-0000000',
+        password: sha1(password),
+        salary: 1234567890,
+        role: role
+    }
+>>>>>>> 9990237858f9e9e837d200fdae3beba1f1c0be1e
 }
