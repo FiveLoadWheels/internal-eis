@@ -3,3 +3,10 @@
     overflow: hidden;
     padding-top: 4%;
 }
+
+.PersonnelPage > .sidebar,
+.PersonnelPage > .content {
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 5%;
+}

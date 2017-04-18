@@ -1,0 +1,93 @@
+<%
+    function addSpace(str) {
+        return str.replace(/([A-Z])/g, ' $1').trim();
+    }
+
+    function actionTypeToId(type) {
+        return type.toLowerCase().replace(/_/g, '-');
+    }
+%>
+<link rel="stylesheet" href="/stylesheets/personnel.css">
+<div class="PersonnelPage clearfix" full-height>
+    <div class="sidebar col-xs-3">
+
+        <div class="form-group login-form">
+            <div class="input-group">
+                <div class="input-group-addon">
+                    User ID #
+                </div>
+                <input class="form-control getById" placeholder="Order ID" value="<%= _query.filter ? orderPage.order.id : '' %>">
+            </div>
+        </div>
+
+        <div class="title">Objectives</div>
+        <% personnelPage.users.forEach(function(obj) { %>
+            <div class="objective" style="<%= personnelPage.users.id === obj.id ? 'background: #f1f1f1;': '' %>">
+                <a href="/personnel/view/<%= obj.id %>">
+                    <span class="glyphicon glyphicon-tasks"></span>
+                    <% if (personnelPage.order.id === obj.id) { %>
+                        <b>Order #<%= obj.id %></b>
+                    <% } else { %>
+                        Order #<%= obj.id %>
+                    <% } %>
+                </a>
+                <ul>
+                    <li>
+                        <span class="glyphicon glyphicon-time"></span>
+                        Create at: <%= obj.ctime %>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-stats"></span>
+                        Dept: <%= addSpace(obj.role) %>
+                    </li>
+                </ul>
+            </div>
+        <% }) %>
+    </div>
+
+    <div class="content col-xs-9">
+        <h1>User ID #<%= personnelPage.users.id %>: Summaries</h1>
+
+        <h2>Procedure</h2>
+        <div class="card">
+            <div class="subtitle">
+                User Name: <b><%= personnel.users.firstname + ' ' +  %= personnel.users.firstname></b>
+            </div>
+
+            <button class="btn btn-default" data-toggle="modal" data-target="">
+                Modify
+            </button>
+            <button class="btn btn-default" data-toggle="modal" data-target="">
+                Delete
+            </button>
+        </div>
+
+        <h2>Products</h2>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <td>ID #</td>
+                    <td>FirstName</td>
+                    <td>LastName</td>
+                    <td>Create Time</td>
+                    <td>Dept</td>
+                    <td>Salary</td>
+                    <td>Tel</td>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td><%= personnelPage.users.id %></td>
+                        <td><%= personnelPage.users.firstname %></td>
+                        <td><%= personnelPage.users.lastname %></td>
+                        <td><%= personnelPage.users.ctime %></td>
+                        <td><%= personnelPage.users.role %></td>
+                        <td><%= personnelPage.users.salary %></td>
+                        <td><%= personnelPage.users.tel %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
