@@ -31,7 +31,6 @@ let orders = [
 let users = [
     createUser(400132, '1008611', 'Kai-shek', 'Chiang', PersonnelRole.Logistics),
     createUser(400135, '1008611', 'Nick', 'Ng', PersonnelRole.Production)
-
 ];
 
 exports.products = products;
@@ -87,8 +86,11 @@ function createUser(id, password, firstName, lastName, role) {
         firstName: firstName,
         lastName: lastName,
         lastLogin: Date.now(),
+        ctime: Date.now(),
+        mtime: Date.now(),
         tel: '000-0000000',
         password: sha1(password),
-        role: role
-    }
+        role: role,
+        retireTime: null
+    };
 }

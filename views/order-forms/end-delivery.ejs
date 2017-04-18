@@ -1,4 +1,5 @@
 <form class="form-horizontal handleAction" data-action="END_DELIVERY" data-id="<%= id %>">
+  <% let user = req.session.user; %>
   <div class="text-danger" style="padding: 10px 0px; font-size: 1.1em">
     Be aware: You are now manually updating delivery status.
     <b>Please ensure that you have to do so</b>. Your operation will be recorded.
@@ -7,15 +8,10 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">Handler</label>
     <div class="col-sm-10">
-        <div class="form-control" disabled><span class="glyphicon glyphicon-user"></span>
-        Nick Ng (Logistics Department)</div>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="rating" class="col-sm-2 control-label">Customer Rating</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" action-payload name="rating" data-type="Number" placeholder="Customer Rating">
+        <div class="form-control" disabled>
+          <span class="glyphicon glyphicon-user"></span>
+          <%= `${user.firstName} ${user.lastName} (${PersonnelRole[user.role]} Department)` %>
+        </div>
     </div>
   </div>
 
@@ -29,7 +25,7 @@
   <div class="form-group">
     <label for="password" class="col-sm-2 control-label">Account Password</label>
     <div class="col-sm-10">
-      <input type="password" class="form-control" name="password" placeholder="Input password to confirm your identity">
+      <input type="password" class="form-control" name="passwordConfirm" placeholder="Input password to confirm your identity">
     </div>
   </div>
 

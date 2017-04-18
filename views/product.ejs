@@ -55,7 +55,7 @@
             </div>
 
             <% productPage.product.availableActions.forEach(function(action) { %>
-                <button class="btn btn-default" data-toggle="modal" data-target="#<%= action.id + '-modal' %>">
+                <button class="btn btn-default" data-toggle="modal" data-target="#<%= actionTypeToId(action.id) + '-modal' %>">
                     <%= action.viewName %>
                 </button>
             <% }) %>
@@ -69,6 +69,7 @@
                     <td>#</td>
                     <td>Model Name</td>
                     <td>Quantity</td>
+                    <td>Pirce</td>
                     <td>Detail</td>
                 </thead>
 
@@ -78,6 +79,7 @@
                             <td><%= acc.id %></td>
                             <td><%= acc.modelName %></td>
                             <td><%= acc.quantity %></td>
+                            <td><%= acc.purchasePrice %></td>
                             <td>
                                 <a href="/accessory/view/<%= acc.id %>">Detail</a>
                             </td>

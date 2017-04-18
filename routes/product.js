@@ -28,7 +28,8 @@ router.post('/handle/:id', (req, res) => {
     Promise.resolve(handleProduct(product, req.body))
     .then(() => {
         // save product and get order
-        return orders[product.oid];
+        console.log(`Order #${product.oid} of product #${product.id}`, orders.find(o => o.id === product.oid));
+        return orders.find(o => o.id === product.oid);
     })
     .then((order) => {
         // peer handle
