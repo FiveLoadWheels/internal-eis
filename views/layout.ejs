@@ -21,15 +21,21 @@
                     Help
                 </a>
                 
-                <a class="n_nav-item pull-right">
-                    <% if (req.session.user) { 
-                        let user = req.session.user; %>
+                <% if (!req.session.user) { %>
+                    <a  class="n_nav-item pull-right" href="/user/login">Login</a>
+                <% } else { %>
+                    <a  class="n_nav-item pull-right" href="/user/logout">Logout</a>
+                <% } %>
+
+                <% if (req.session.user) { 
+                    let user = req.session.user; %>
+                    <a class="n_nav-item pull-right">
                         <span class="glyphicon glyphicon-user"></span>
                         <%= `${user.firstName} ${user.lastName} (${PersonnelRole[user.role]} Department)` %>
-                    <% } else { %>
-                        <a href="/personnel/login">Login</a>
-                    <% } %>
-                </a>
+                    </a>
+                <% } %> 
+
+
             </div>
 
             <%- body %>

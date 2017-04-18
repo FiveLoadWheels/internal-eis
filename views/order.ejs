@@ -54,6 +54,8 @@
                 Current Status: <b><%= addSpace(orderPage.OrderStatus[orderPage.order.status]) %></b>
             </div>
 
+            <h5>Action(s) for Current Order</h5>
+
             <% orderPage.order.availableActions.forEach(function(action) { %>
                 <button 
                     class="btn btn-default"

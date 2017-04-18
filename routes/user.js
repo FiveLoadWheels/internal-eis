@@ -20,6 +20,12 @@ router.post('/login', (req, res) => {
   });
 });
 
+router.get('/logout', (req, res) => {
+  req.session.regenerate(() => {
+    res.redirect(302, '/user/login');
+  });
+});
+
 router.checkRole = function buildCheckRole(matchRole) {
 
   return function checkRole(req, res, next) {
