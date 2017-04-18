@@ -50,6 +50,9 @@ app.use(session({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// bootstrap and jquery
+app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap')));
+app.use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery')));
 
 // TODO: Dirty patch!!!!
 let PersonnelRole = require('eis-thinking').datatypes.PersonnelRole;
@@ -64,6 +67,11 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.get('/debug', (req, res) => {
+  res.type('application/json');
+  res.send(JSON.stringify(require('./data/__fake'), null, 4));
+})
 
 app.use('/', index);
 app.use('/users', users);

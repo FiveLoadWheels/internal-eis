@@ -9,7 +9,7 @@ var orders = require('../data/__fake').orders;
 
 var orderRole = checkRole(hasActableRole);
 // 屏蔽角色权限
-orderRole = checkRole(val => true);
+// orderRole = checkRole(val => true);
 
 router.get('/view/:id', isLogin, (req, res) => {
     let order = orders.find(o => o.id === Number(req.params.id));

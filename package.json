@@ -7,12 +7,14 @@
   },
   "dependencies": {
     "body-parser": "~1.17.1",
+    "bootstrap": "^3.3.7",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "eis-thinking": "git+https://github.com/FiveLoadWheels/eis-thinking.git",
     "ejs": "~2.5.6",
     "express": "~4.15.2",
     "express-session": "^1.15.2",
+    "jquery": "^3.2.1",
     "morgan": "~1.8.1",
     "sequelize": "^3.30.4",
     "serve-favicon": "~2.4.2"
