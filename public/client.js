@@ -12,6 +12,10 @@ buildActionForm(app, 'OrderPage', 'order');
 buildGetById(app, 'ProductPage', 'product');
 buildActionForm(app, 'ProductPage', 'product');
 
+// ====== PersonnelPageController ======
+
+buildGetById(app, 'PersonnelPage', 'personnel');
+buildActionForm(app, 'PersonnelPage', 'personnel');
 
 // ====== Helpers ======
 
