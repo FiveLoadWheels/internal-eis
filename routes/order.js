@@ -13,13 +13,14 @@ var orderRole = checkRole(hasActableRole);
 
 router.get('/view/:id', isLogin, (req, res) => {
     let order = orders.find(o => o.id === Number(req.params.id));
+    let user = req.session.user;
     res.render('order', {
         title: 'Order #' + order.id,
         orderPage: {
             objectives: req.query.filter ?
-                [getOrderState(order)] :
-                orders.map(o => getOrderState(o)).filter(o => hasReadableRole(o, req.session.user.role)),
-            order: getOrderState(order),
+                [getOrderState(order, user)] :
+                orders.map(o => getOrderState(o, user)).filter(o => hasReadableRole(o, req.session.user.role)),
+            order: getOrderState(order, user),
             OrderStatus,
         },
         _query: req.query
@@ -62,29 +63,33 @@ module.exports = router;
 /** 
  * @param {EIS.Datatypes.IOrder} order 
  */
-function getOrderState(order) {
+function getOrderState(order, user) {
     return Object.assign({
         statusName: OrderStatus[order.status],
-        availableActions: getAvailableActions(order.status)
+        availableActions: getAvailableActions(order, user)
     }, order);
 }
 
-function getAvailableActions(status) {
-    switch (status) {
+function getAvailableActions(order, user) {
+    switch (order.status) {
     
     case OrderStatus.Created:
         return [];
     case OrderStatus.CustomerAcknowledged:
-        return [];
+        return [
+            { id: '', viewName: 'Start Process (Perform automatically when product process starts)' , disabled: true}
+        ];
     case OrderStatus.ProcessStarted:
-        return [];
+        return [
+            { id: '', viewName: 'End Process (Perform automatically when product process all finish)' , disabled: true}
+        ];
     case OrderStatus.ProcessFinished:
         return [
-            { id: 'START_DELIVERY', viewName: 'Start Delivery' }
+            { id: 'START_DELIVERY', viewName: 'Start Delivery', disabled: !hasActableRole(order, user.role) }
         ];
     case OrderStatus.DeliveryStarted:
         return [
-            { id: 'END_DELIVERY', viewName: 'End Delivery' }
+            { id: 'END_DELIVERY', viewName: 'End Delivery', disabled: !hasActableRole(order, user.role) }
         ];
     case OrderStatus.DeliveryFinished:
         return [];
