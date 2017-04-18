@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var { handleOrder, datatypes } = require('eis-thinking');
 var { OrderStatus, PersonnelRole } = datatypes;
-var { checkRole, isLogin } = require('./user');
+var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
 var orders = require('../storage/__fake').orders;
 
@@ -29,6 +29,7 @@ router.get('/view/:id', isLogin, (req, res) => {
 router.post('/handle/:id',
     (req, res, next) => { req.roleTarget = orders.find(o => o.id === Number(req.params.id)); next() },
     orderRole,
+    checkPasswordConfirm,
     (req, res) => {
     console.log(req.body);
     // get order
@@ -39,7 +40,7 @@ router.post('/handle/:id',
         res.json({ error: null });
     })
     .catch((err) => {
-        res.json({ error: err });
+        res.json({ error: String(err) });
     });
 });
 

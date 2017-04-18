@@ -37,14 +37,21 @@ function buildActionForm(app, controller, baseRoute) {
     app.on('submit', `.${controller} form.handleAction`, (e) => {
         e.preventDefault();
         let form = e.target;
-        let action = form.dataset.action;
+        let actionType = form.dataset.action;
         let payload = {};
         Array.from($(form).find('input[action-payload]')).forEach(el => {
             let dataType = JSONTypes[el.dataset.type];
             payload[el.name] = dataType(el.value);
         });
 
-        postJson(`/${baseRoute}/handle/` + form.dataset.id, { type: action, payload })
+        // build action object
+        let action = { type: actionType, payload };
+
+        // passwordConfirm
+        action.passwordConfirm = $(form).find('input[name=passwordConfirm]').val();
+        console.log('passwordConfirm', action.passwordConfirm);
+
+        postJson(`/${baseRoute}/handle/` + form.dataset.id, action)
         .then(result => {
             if (result.err) {
                 throw result.err;

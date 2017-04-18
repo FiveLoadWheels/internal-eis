@@ -41,4 +41,18 @@ router.isLogin = function isLogin(req, res, next) {
     else res.redirect(302, '/user/login');
 }
 
+router.checkPasswordConfirm = function checkPasswordConfirm(req, res, next) {
+  // get password form json formatted body
+  console.log('req.body', req.body);
+  console.log('passwordConfirm', req.body.passwordConfirm);
+  let password = req.body.passwordConfirm;
+  if (password && sha1(password) === req.session.user.password) {
+    delete req.body.passwordConfirm;
+    next();
+  }
+  else {
+    res.json({ err: 'Incorrect password' });
+  }
+}
+
 module.exports = router;
