@@ -11,7 +11,9 @@
         </div>
 
         <div class="clearfix">
-            <button class="btn btn-default btn-sm">Add New Users</button>
+            <button class="btn btn-default btn-sm"  data-toggle="modal" data-target="#add-user-modal">
+                Add New Users
+            </button>
         </div>
 
         <div class="title">Objectives</div>
@@ -95,5 +97,11 @@
         viewId: 'delete-user',
         viewName: 'Delete User',
         body: include(`personnel-forms/delete-user`, { id: personnelPage.user.id })
+    }); %>
+
+    <%- include('modal-layout', {
+        viewId: 'add-user',
+        viewName: 'Add User',
+        body: include(`personnel-forms/add-user`)
     }); %>
 </div>
