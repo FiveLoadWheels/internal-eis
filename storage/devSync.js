@@ -82,20 +82,56 @@ module.exports = function testSync() {
         // models.ProductModel.sync({ force }),
         // models.ProductModelAccMap.sync({ force }),
         models.Operation.sync({ force: true }),
+        models.FinanceRecords.sync({ force:true }),
         // models.Supplier.sync({ force })
-    ]).catch(err => {
+    ]).then(() => {
+        return [
+            insertOrder(orders.shift()),
+            insertMisc(),
+            insertRecords(),
+        ];
+    }).then(() => {
+        console.log('DevSync done.');
+    }).catch(err => {
         console.error(err);
     });
-    // .then(() => {
-    //     return [
-    //         insertOrder(orders.shift()),
-    //         insertMisc()
-    //     ];
-    // }).then(() => {
-    //     console.log('DevSync done.');
-    // }).catch(err => {
-    //     console.error(err);
-    // });
+
+    function insertRecords() {
+        let DefineRecs = models.FinanceRecords;
+        let records = [
+            {
+                type: 'salary',
+                amount: 666666,
+                description: 'Salary of 06/2017',
+                ctime: Date.now(),
+            },
+            {
+                type: 'sales',
+                amount: 888888,
+                description: 'Sell 10 laptops',
+                ctime: Date.now(),
+            },
+            {
+                type: 'salary',
+                amount: 686868,
+                description: 'Salary of 07/2017',
+                ctime: Date.now(),
+            },
+            {
+                type: 'debt',
+                amount: 10000000,
+                description: 'Borrow money from HSBC',
+                ctime: Date.now(),
+            },
+            {
+                type: 'expense',
+                amount: -989820,
+                description: 'Pay for suppliers',
+                ctime: Date.now(),
+            },
+        ].map(r => models.FinanceRecords.create(r));
+        return Promise.all(records);
+    };
 }
 
 

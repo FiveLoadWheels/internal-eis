@@ -1,60 +1,99 @@
 var express = require('express');
 var router = express.Router();
+var { isLogin, checkRole, checkPasswordConfirm } = require('./user');
+var { FinanceRecords } = require('../storage/models');
 
 var records = require('../storage/__fake').records;
 
-router.get('/', function(req, res) {
-    res.render('finance', {
-        title: 'Finance Records',
-        financePage: {
-            records: records
-        }
-    });
-});
+function allRecs(req, res, next) {
+    FinanceRecords.findAll().then( (allRecords) => {
+        req.allRecords = allRecords;
+        next();
+    }).catch(err => next(err));
+}
 
-router.get('/search', function(req, res) {
-    var recs = records;
-    var results = new Array;
+function findID(req, res, next) {
     if (req.query.id) {
-        results.push( recs.find( r => r.id === Number(req.query.id)));
+        FinanceRecords.findById(req.query.id)
+        .then( (allRecords) => {
+            req.allRecords = allRecords;
+            next();
+        }).catch(err => next(err));
     } else {
-        if (req.query.StartTime) {
-            recs = recs.filter(r => r.ctime >= req.query.StartTime);
-        }
-        if (req.query.EndTime) {
-            recs = recs.filter(r => r.ctime <= req.query.EndTime);
-        }
-        if (req.query.type) {
-            recs = recs.filter( (r) => {
-                return r.type === req.query.type;
-            });
-        }
-        if (req.query.StartAmount) {
-            recs = recs.filter(r => r.amount >= req.query.StartAmount);
-        }
-        if (req.query.EndAmount) {
-            recs = recs.filter(r => r.amount <= req.query.EndTime);
-        }
-        results = recs;
+        return next();
     }
+}
 
+function findMore(req, res, next) {
+    if (!req.query.id) {
+        FinanceRecords.findAll({
+            where: {
+                amount: req.query.StartAmount && req.query.EndAmount==99999999999999?
+                    {$not: null}:
+                    {$gte: req.query.StartAmount, $lte: req.query.EndAmount},
+                ctime: req.query.StartTime=='' && req.query.EndTime==''?
+                    {$not: null}:
+                    {$gte: req.query.StartTime, $lte: req.query.EndTime},
+                type: req.query.type? req.query.type:{$not: req.query.type}
+            }
+        }).then( (allRecords) => {
+            req.allRecords = allRecords;
+            next();
+        }).catch(err => next(err));
+    } else {
+        return next();
+    }
+}
+
+router.get('/', isLogin, allRecs, function(req, res, next) {
+    let { allRecords } = req;
     res.render('finance', {
         title: 'Finance Records',
         financePage: {
-            records: results
+            records: allRecords
         }
     });
 });
 
-router.post('/handle/:id', (req, res) => {
+router.get('/search', isLogin, findID, findMore, function(req, res, next) {
+    let { allRecords } = req;
+    res.render('finance', {
+        title: 'Finance Records',
+        financePage: {
+            records: allRecords
+        }
+    });
+});
+
+router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
     let action = req.body;
     switch (action.type) {
     case 'MODIFY_RECORD':
-
+        action.payload = {
+            // uid: req.session.user,
+            id: req.body.id,
+            type: req.body.type,
+            amount: req.body.amount,
+            description: req.body.description,
+        };
+        FinanceRecords.findById(action.payload.id).then( (record) => {
+            record.type = action.payload.type;
+            record.amount = action.payload.amount;
+            record.description = action.payload.description;
+            record.mtime = Date.now();
+            return record.save();
+        });
     break;
 
     case 'ADD_RECORD':
-
+        action.payload = {
+            // uid: req.session.user,
+            type: req.body.type,
+            amount: req.body.amount,
+            description: req.body.description,
+            ctime: Date.now(),
+        };
+        FinanceRecords.create(record);
     break;
     }
 });

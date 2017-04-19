@@ -75,7 +75,10 @@ exports.FinanceRecords = sequelize.define('finance_record', {
     id: ID(),
     type: Sequelize.STRING,
     amount: Sequelize.INTEGER,
-    description: Sequelize.STRING
+    description: Sequelize.STRING,
+    description: Sequelize.STRING,
+    ctime: Sequelize.INTEGER,
+    mtime:Sequelize.INTEGER,
 }, commonOps('finance_record'));
 
 exports.Users = sequelize.define('user', {

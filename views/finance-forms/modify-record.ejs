@@ -16,35 +16,44 @@
     <div class="form-group">
 		<label for="password" class="col-sm-2 control-label">Account Password</label>
 		<div class="col-sm-10">
-			<input type="password" class="form-control" name="password" placeholder="Input password to confirm your identity">
+			<input type="password" class="form-control" name="passwordConfirm" placeholder="Input password to confirm your identity">
 		</div>
 	</div>
 
     <div class="form-group">
 		<label for="id" class="col-sm-2 control-label">ID</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="id" disabled>
+			<input type="text" action-payload data-type="Number" class="form-control" name="id" disabled>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="type" class="col-sm-2 control-label">Type</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="type">
+			<select name="type" action-payload data-type="String" class="form-control">
+                <option value="" disabled selected>Select an option</option>
+                <option value="sales">Sales</option>
+                <option value="OtherIncome">Other Type of Income</option>
+                <option value="salary">Salary</option>
+                <option value="debt">Debt</option>
+                <option value="expense">Expense</option>
+                <option value="promotion">Promotion</option>
+                <option value="other">Other</option>
+            </select>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="amount" class="col-sm-2 control-label">Amount</label>
 		<div class="col-sm-10">
-			<input type="number" class="form-control" name="amount">
+			<input type="number" action-payload data-type="Number" class="form-control" name="amount">
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="description" class="col-sm-2 control-label">Description</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="description">
+			<input type="text" action-payload data-type="Sting" class="form-control" name="description">
 		</div>
 	</div>
 
