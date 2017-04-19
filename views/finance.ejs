@@ -48,7 +48,7 @@
                 <div class="col-xs-10">
                     <div class="input-group">
                         <div class="input-group-addon">$</div>
-                        <input type="number" class="form-control" name="StartAmount" placeholder="0" />
+                        <input type="number" class="form-control" name="StartAmount" value="0" />
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 <div class="col-xs-10">
                     <div class="input-group">
                         <div class="input-group-addon">$</div>
-                        <input type="number" class="form-control" name="EndAmount" placeholder="0" />
+                        <input type="number" class="form-control" name="EndAmount" value="99999999999999" />
                     </div>
                 </div>
             </div>
@@ -93,6 +93,7 @@
                 </thead>
 
                 <tbody>
+                    <% if (financePage.records[0]) { %>
                     <% financePage.records.forEach( function(rec) { %>
                     <tr>
                         <td><%= rec.id %></td>
@@ -109,7 +110,23 @@
                             </a>
                         </td>
                     </tr>
-                    <% }); %>
+                    <% });} else { %>
+                    <tr>
+                        <td><%= financePage.records.id %></td>
+                        <td><%= financePage.records.type %></td>
+                        <td><%= financePage.records.ctime %></td>
+                        <td><%= financePage.records.amount %></td>
+                        <td><%= financePage.records.description %></td>
+                        <td>
+                            <a type="button"
+                                class="modifyRec"
+                                data-rec="<%= JSON.stringify(financePage.records) %>"
+                                data-toggle="modal" data-target="#modify-record-modal">
+                                Modify
+                            </a>
+                        </td>
+                    </tr>
+                    <% } %>
                 </tbody>
             </table>
         </div>
