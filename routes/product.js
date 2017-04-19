@@ -10,9 +10,17 @@ var { operations } = require('../storage/__fake');
 var productActableRole = checkRole(hasActableRole);
 
 function getProduct(req, res, next) {
-    stor.products.get(Number(req.params.id)).then(product => {
+    let pid = Number(req.params.id);
+    if (!pid) {
+        req.product = null;
+        return next();
+    }
+
+    stor.products.get(pid).then(product => {
         req.product = req.roleTarget = product;
         next();
+    }).catch(err => {
+        next(err);
     });
 }
 
@@ -22,20 +30,23 @@ function getProductList(req, res, next) {
     }).then(products => {
         req.products = products;
         next();
-    })
+    }).catch(err => {
+        next(err);
+    });
 }
 
 router.get('/view/:id', isLogin, getProduct, getProductList, (req, res) => {
     let product = req.product;
     let products = req.products;
     let user = req.session.user;
+    let productState = product? getProductState(product, user) : null;
     res.render('product', {
-        title: 'Product #' + product.id,
+        title: product ? 'Product #' + product.id : 'Products',
         productPage: {
             objectives: req.query.filter ?
-                [getProductState(product, user)] :
+                [productState] :
                 products.map(o => getProductState(o, user)),
-            product: getProductState(product, user),
+            product: productState,
             ProductStatus,
         },
         _query: req.query

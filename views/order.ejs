@@ -21,11 +21,12 @@
         </div>
 
         <div class="title">Objectives</div>
+        <% let oid = orderPage.order ? orderPage.order.id : 0; %>
         <% orderPage.objectives.forEach(function(obj) { %>
-            <div class="objective" style="<%= orderPage.order.id === obj.id ? 'background: #f1f1f1;': '' %>">
+            <div class="objective" style="<%= oid === obj.id ? 'background: #f1f1f1;': '' %>">
                 <a href="/order/view/<%= obj.id %>">
                     <span class="glyphicon glyphicon-tasks"></span>
-                    <% if (orderPage.order.id === obj.id) { %>
+                    <% if (oid === obj.id) { %>
                         <b>Order #<%= obj.id %></b>
                     <% } else { %>
                         Order #<%= obj.id %>
@@ -45,68 +46,73 @@
         <% }) %>
     </div>
 
+    
     <div class="content col-xs-9">
-        <h1>Order #<%= orderPage.order.id %>: Summaries</h1>
+        <% if (oid) { %>
+            <h1>Order #<%= orderPage.order.id %>: Summaries</h1>
 
-        <h2>Procedure</h2>
-        <div class="card">
-            <div class="subtitle">
-                Current Status: <b><%= addSpace(orderPage.OrderStatus[orderPage.order.status]) %></b>
+            <h2>Procedure</h2>
+            <div class="card">
+                <div class="subtitle">
+                    Current Status: <b><%= addSpace(orderPage.OrderStatus[orderPage.order.status]) %></b>
+                </div>
+
+                <h5>Action(s) for Current Order</h5>
+
+                <% orderPage.order.availableActions.forEach(function(action) { %>
+                    <button 
+                        class="btn btn-default"
+                        data-toggle="modal"
+                        data-target="#<%= actionTypeToId(action.id) + '-modal' %>"
+                        <%= action.disabled ? 'disabled' : '' %> >
+                        <%= action.viewName %>
+                    </button>
+                <% }) %>
             </div>
 
-            <h5>Action(s) for Current Order</h5>
+            <h2>Products</h2>
 
-            <% orderPage.order.availableActions.forEach(function(action) { %>
-                <button 
-                    class="btn btn-default"
-                    data-toggle="modal"
-                    data-target="#<%= actionTypeToId(action.id) + '-modal' %>"
-                    <%= action.disabled ? 'disabled' : '' %> >
-                    <%= action.viewName %>
-                </button>
-            <% }) %>
-        </div>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <td>#</td>
+                        <td>Serial Number</td>
+                        <td>Status</td>
+                        <td>Detail</td>
+                    </thead>
 
-        <h2>Products</h2>
-
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <td>#</td>
-                    <td>Serial Number</td>
-                    <td>Status</td>
-                    <td>Detail</td>
-                </thead>
-
-                <tbody>
-                    <% orderPage.order.products.forEach((product) => { %>
-                        <tr>
-                            <td><%= product.id %></td>
-                            <td><%= product.serial_number %></td>
-                            <td><%= product.status %></td>
-                            <td>
-                                <a href="/product/view/<%= product.id %>">Detail</a>
-                            </td>
-                        </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </div>
-
-        <h2>Term</h2>
-
-        <div>22% time spent in passed steps, 12 days 4 hours left</div>
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%;">
-                <span class="sr-only">22% Complete</span>
+                    <tbody>
+                        <% orderPage.order.products.forEach((product) => { %>
+                            <tr>
+                                <td><%= product.id %></td>
+                                <td><%= product.serial_number %></td>
+                                <td><%= product.status %></td>
+                                <td>
+                                    <a href="/product/view/<%= product.id %>">Detail</a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
             </div>
-        </div>
+
+            <h2>Term</h2>
+
+            <div>22% time spent in passed steps, 12 days 4 hours left</div>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%;">
+                    <span class="sr-only">22% Complete</span>
+                </div>
+            </div>
+        <% } else { %>
+            <h2 style="color: #777; line-height: 100%; text-align: center">Select one order...</h2>
+        <% } %>
     </div>
-
+    
 
     <%-
 
-    orderPage.order.availableActions.map(a => {
+    oid && orderPage.order.availableActions.map(a => {
         try {
             return include('modal-layout', {
                 viewId: actionTypeToId(a.id),

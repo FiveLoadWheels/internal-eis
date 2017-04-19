@@ -14,9 +14,16 @@ var orderRole = checkRole(hasActableRole);
 // orderRole = checkRole(val => true);
 
 function getOrder(req, res, next) {
-    stor.orders.get(Number(req.params.id)).then(order => {
+    let oid = Number(req.params.id);
+    if (oid === 0) {
+        req.order = null;
+        return next();
+    }
+    stor.orders.get(oid).then(order => {
         req.order = req.roleTarget = order;
         next();
+    }).catch(err => {
+        next(err);
     });
 }
 
@@ -26,6 +33,8 @@ function getOrderList(req, res, next) {
     }).then(orders => {
         req.orders = orders;
         next();
+    }).catch(err => {
+        next(err);
     })
 }
 
@@ -33,13 +42,14 @@ router.get('/view/:id', isLogin, getOrder, getOrderList, (req, res) => {
     let order = req.order;
     let orders = req.orders;
     let user = req.session.user;
+    let orderState = order ? getOrderState(order, user) : null;
     res.render('order', {
-        title: 'Order #' + order.id,
+        title: order ? 'Order #' + order.id : 'Orders',
         orderPage: {
             objectives: req.query.filter ?
-                [getOrderState(order, user)] :
+                [orderState] :
                 orders.map(o => getOrderState(o, user)),
-            order: getOrderState(order, user),
+            order: orderState,
             OrderStatus,
         },
         _query: req.query
