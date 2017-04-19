@@ -65,6 +65,27 @@ exports.ProductModel = sequelize.define('product_model', {
     screenSize: { type: Sequelize.INTEGER, field: 'screen_size' }
 }, commonOps('product_models'));
 
+exports.FinanceRecords = sequelize.define('finance_record', {
+    id: ID(),
+    type: Sequelize.STRING,
+    amount: Sequelize.INTEGER,
+    description: Sequelize.STRING
+}, commonOps('finance_records'));
+
+exports.Users = sequelize.define('user', {
+    id: ID(),
+    account: {
+        type: Sequelize.INTEGER,
+        uniqueKey: true
+    },
+    password: Sequelize.STRING,
+    firstname: Sequelize.STRING,
+    lastname: Sequelize.STRING,
+    role: Sequelize.INTEGER,
+    salary: Sequelize.INTEGER,
+    telephone: Sequelize.INTEGER
+}, commonOps('users'));
+
 exports.ProductModelAccMap = sequelize.define('mod_consist_acc', {
     modelId: { type: Sequelize.INTEGER, primaryKey: true, filed: 'pid' },
     aid: { type: Sequelize.INTEGER, primaryKey: true }
