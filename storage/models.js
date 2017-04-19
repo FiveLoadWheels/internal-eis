@@ -85,6 +85,11 @@ exports.Users = sequelize.define('user', {
     telephone: Sequelize.INTEGER
 }, commonOps('users'));
 
+exports.ProductModelAccMap = sequelize.define('mod_consist_acc', {
+    modelId: { type: Sequelize.INTEGER, primaryKey: true },
+    aid: { type: Sequelize.INTEGER, primaryKey: true }
+}, commonOps('mod_consist_acc'));
+
 function ID() {
     return { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true };
 }

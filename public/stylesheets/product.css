@@ -1,7 +1,7 @@
 .ProductPage {
     width: 100%;
     overflow: hidden;
-    padding-top: 2%;
+    padding-top: 40px;
 }
 
 .ProductPage > .sidebar,
