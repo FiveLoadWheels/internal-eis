@@ -26,7 +26,7 @@ function getProduct(req, res, next) {
 
 function getProductList(req, res, next) {
     stor.products.getList({
-        where: { status: { gt: 1 } }
+        where: { status: { gte: 1 } }
     }).then(products => {
         req.products = products;
         next();
