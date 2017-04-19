@@ -65,7 +65,8 @@ module.exports = function testSync() {
         models.Product.sync({ force }),
         models.ProductAccMap.sync({ force }),
         models.ProductModel.sync({ force }),
-        models.ProductModelAccMap.sync({ force })
+        models.ProductModelAccMap.sync({ force }),
+        models.Operation.sync({ force })
     ]).then(() => {
         return [
             insertOrder(orders.shift()),
