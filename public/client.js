@@ -25,6 +25,10 @@ app.on('click', '.FinancePage .modifyRec', (e) => {
     console.log('rec', rec);
     // *** Apply rec to the modal ***
     $('#modify-record-modal input[name=id]').val(rec.id);
+    $('#modify-record-modal input[name=type]').val(rec.type);
+    $('#modify-record-modal input[name=amount]').val(rec.amount);
+    $('#modify-record-modal input[name=description]').val(rec.description);
+
 });
 
 // ====== Helpers ======

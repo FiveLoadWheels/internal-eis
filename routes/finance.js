@@ -46,4 +46,17 @@ router.get('/search', function(req, res) {
     });
 });
 
+router.post('/handle/:id', (req, res) => {
+    let action = req.body;
+    switch (action.type) {
+    case 'MODIFY_RECORD':
+
+    break;
+
+    case 'ADD_RECORD':
+
+    break;
+    }
+});
+
 module.exports = router;
