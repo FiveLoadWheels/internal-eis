@@ -84,7 +84,6 @@
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
-                    <td>#</td>
                     <td>ID</td>
                     <td>Type</td>
                     <td>Create At</td>
@@ -94,19 +93,14 @@
                 </thead>
 
                 <tbody>
-                    <% var item = new Array;
-                    var num;%>
                     <% financePage.records.forEach( function(rec) { %>
-                    <% item.push(rec); %>
                     <tr>
-                        <td><%= item.indexOf(rec) %></td>
                         <td><%= rec.id %></td>
                         <td><%= rec.type %></td>
                         <td><%= rec.ctime %></td>
                         <td><%= rec.amount %></td>
                         <td><%= rec.description %></td>
                         <td>
-                            <!--<a href="">Modify</a>-->
                             <a type="button"
                                 class="modifyRec"
                                 data-rec="<%= JSON.stringify(rec) %>"
