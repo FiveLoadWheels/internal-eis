@@ -25,7 +25,7 @@ a {
 	/*font-family: "Comic Sans MS";*/
 	width: 100%;
 	position: fixed;
-	z-index: 89000;
+	z-index: 9;
 }
 
 /*.nav-main > :nth-child(1) {

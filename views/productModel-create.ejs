@@ -1,0 +1,70 @@
+<div class="ProductModelCreatePage clearfix default-list-view" full-height>
+    <div class="container" style="height: 100%; overflow: auto;">
+        <h1>Create New ProductModel</h1>
+
+        <form action="/productModel/create" method="POST">
+        <h2>Basic Information</h2>
+        <div class="card">
+            
+        </div>
+
+        <div class="form-group">
+            <div>Primary Price:</div>
+            <div><input class="form-control" type="text" name="primaryPrice"></div>
+        </div>
+
+        <div class="form-group">
+            <div>Model Name:</div>
+            <div><input class="form-control" type="text" name="modelName"></div>
+        </div>
+
+        <div class="form-group">
+            <div>Image:</div>
+            <div><input class="form-control" type="text" name="imageUrl"></div>
+        </div>
+        
+        <button class="btn btn-default" type="submit">Submit</button>
+
+        <h2>Candidate Accessories</h2>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <td>Used</td>
+                    <td>#</td>
+                    <td>Model Name</td>
+                    <td>Type</td>
+                    <td>Quantity</td>
+                    <td>Pirce</td>
+                    <td>Detail</td>
+                </thead>
+
+                <tbody>
+                    <% productModelCreatePage.allAccessories.forEach((acc) => { %>
+                        <tr>
+                            <td>
+                                <input
+                                    class=""
+                                    type="checkbox"
+                                    name="acc-<%= acc.id %>">
+                                <label for="acc-<%= acc.id %>">Select</label>
+                            </td>
+                            <td><%= acc.id %></td>
+                            <td><%= acc.modelName %></td>
+                            <td><%= acc.type %></td>
+                            <td><%= acc.quantity %></td>
+                            <td><%= acc.purchasePrice %></td>
+                            <td>
+                                <a href="/accessory/view/<%= acc.id %>">Detail</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+        </form>
+    </div>
+
+    </div>
+
+</div>

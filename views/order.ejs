@@ -30,7 +30,7 @@
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-stats"></span>
-                        Status: <%= addSpace(obj.statusName) %>
+                        Status: <%= addSpace(obj.statusName || 'Unknown') %>
                     </li>
                 </ul>
             </div>
@@ -40,12 +40,19 @@
     
     <div class="content col-xs-9">
         <% if (oid) { %>
-            <h1>Order #<%= orderPage.order.id %>: Summaries</h1>
+            <h1>Order #<%= orderPage.order.id %></h1>
 
-            <h2>Procedure</h2>
+            <h2>Procedure & Actions</h2>
             <div class="card">
-                <div class="subtitle">
-                    Current Status: <b><%= addSpace(orderPage.OrderStatus[orderPage.order.status]) %></b>
+                <h5>Current Status</h5>
+                <div class="panel panel-default" style="padding: 10px">
+                    <% for (let i = 1; orderPage.OrderStatus[i]; ++i) { %>
+                        <%
+                        let color = i <= orderPage.order.status ? 'text-success' : 'text-muted';
+                        let statusName = `<span class="${color}">` + addSpace(orderPage.OrderStatus[i]) + '</span>';
+                        %>
+                        <%- i === orderPage.order.status ? `<b>${statusName}</b>` : statusName %> → 
+                    <% } %>
                 </div>
 
                 <h5>Action(s) for Current Order</h5>
@@ -80,7 +87,7 @@
                             <tr>
                                 <td><%= product.id %></td>
                                 <td><%= product.serialNumber %></td>
-                                <td><%= product.status %></td>
+                                <td><%= orderPage.ProductStatus[product.status] %></td>
                                 <td>
                                     <a href="/product/view/<%= product.id %>">Detail</a>
                                 </td>
@@ -91,11 +98,19 @@
             </div>
 
             <h2>Term</h2>
-
-            <div>22% time spent in passed steps, 12 days 4 hours left</div>
+            <%
+            let daysLimit = 7;
+            let ctime = orderPage.order.ctime;
+            console.log('ctime', orderPage.order);
+            let daysAgo = ctime + (daysLimit * 24 * 3600 * 1000);
+            let now = Date.now();
+            let timePercent = (((now - ctime) / (daysAgo - ctime)) * 100).toFixed(2);
+            let daysLeft = (daysLimit * (1 - timePercent / 100)).toFixed(2);
+            %>
+            <div><%= timePercent %>% time spent, <%= daysLeft %> days left</div>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%;">
-                    <span class="sr-only">22% Complete</span>
+                <div class="progress-bar" role="progressbar" aria-valuenow="<%= timePercent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= timePercent %>%;">
+                    <span class="sr-only"><%= timePercent %>% Complete</span>
                 </div>
             </div>
         <% } else { %>

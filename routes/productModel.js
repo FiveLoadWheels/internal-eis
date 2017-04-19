@@ -68,6 +68,36 @@ router.post('/update/:id', isLogin, getOne, (req, res, next) => {
         console.error(err);
         next(err);
     });
-})
+});
+
+router.get('/create', isLogin, allAcc, (req, res, next) => {
+    res.render('productModel-create', {
+        title: 'Create New Model',
+        productModelCreatePage: {
+            allAccessories: req.allAccessories
+        }
+    })
+});
+
+router.post('/create', isLogin, (req, res, next) => {
+    let productModel = {};
+
+    let newAccIds = Object.entries(req.body).filter(e => /acc-/.test(e[0]) && e[1] === 'on').map(e => {
+        return Number(e[0].split('-')[1]);
+    });
+    // console.log('newAccs', newAccs);
+    productModel.primaryPrice = Number(req.body.primaryPrice);
+    productModel.modelName = req.body.modelName;
+    productModel.imageUrl = req.body.imageUrl;
+    productModel.accessoryIds = newAccIds;
+    productModel.screenSize = 25;
+
+    stor.productModels.create(productModel).then((modelId) => {
+        res.redirect(302, '/productModel/view/' + modelId);
+    }).catch(err => {
+        console.error(err);
+        next(err)
+    });
+});
 
 module.exports = router;

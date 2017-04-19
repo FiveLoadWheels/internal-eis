@@ -23,7 +23,13 @@ let orders = [
 
 let users = [
     createUser(400132, '1008611', 'Kai-shek', 'Chiang', PersonnelRole.Logistics),
-    createUser(400135, '1008611', 'Nick', 'Ng', PersonnelRole.Production)
+    createUser(400135, '1008611', 'Steve', 'Jobs', PersonnelRole.Production),
+    createUser(400136, '1008611', 'Bill', 'Gates', PersonnelRole.Finanace),
+    createUser(400137, '1008611', 'Linus', 'Torvalds', PersonnelRole.HumanResource),
+    createUser(400138, '1008611', 'Richard', 'Stallman', PersonnelRole.Sales),
+
+    createUser(400139, '1008611', 'Amy', 'B', PersonnelRole.HumanResource),
+    createUser(400100, '1008611', 'Mark', 'D', PersonnelRole.Finanace),
 ];
 
 let records = [
@@ -84,10 +90,10 @@ function createUser(id, password, firstName, lastName, role) {
         lastLogin: Date.now(),
         ctime: Date.now(),
         mtime: Date.now(),
-        retireTime: null,
+        // retireTime: null,
         tel: '000-0000000',
         password: sha1(password),
-        salary: 1234567890,
+        salary: 25000,
         role: role
     };
 }

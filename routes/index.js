@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var { isLogin } = require('./user');
-var { orders, products, operations } = require('../storage/__fake');
+// var { orders, products, operations } = require('../storage/__fake');
 var { datatypes } = require('eis-thinking');
 var { PersonnelRole, OperationTarget } = datatypes;
 var { Operation } = require('../storage/models');

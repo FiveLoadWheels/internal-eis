@@ -10,6 +10,9 @@
                 <input class="form-control getById" placeholder="Product ID" value="<%= req.query.filter ? productModelPage.productModel.id : '' %>">
             </div>
         </div> -->
+        <div style="padding-top: 10px;">
+            <a class="btn btn-default" href="/productModel/create">Create New Model</a>
+        </div>
 
         <div class="title">Models</div>
         <% let modelId = productModelPage.productModel ? productModelPage.productModel.id : 0; %>
@@ -57,6 +60,12 @@
                 <div>Model Name:</div>
                 <div><input class="form-control" type="text" name="modelName"
                     value="<%= productModelPage.productModel.modelName %>"></div>
+            </div>
+
+            <div class="form-group">
+                <div>Image:</div>
+                <div><input class="form-control" type="text" name="imageUrl"
+                    value="<%= productModelPage.productModel.imageUrl %>"></div>
             </div>
             
             <button class="btn btn-default" type="submit">Submit</button>

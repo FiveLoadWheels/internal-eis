@@ -16,12 +16,12 @@ exports.create = function create(o) {
 }
 
 exports.save = function save(order) {
-    // let products = order.products;
+    let products = order.products;
     delete order.products;
     delete order.customer;
-    // return Promise.all(products.map(productStorage.save)).then(() => {
+    return Promise.all(products.map(p => p.save())).then(() => {
         return order.save();
-    // });
+    });
 }
 
 exports.get = function get(id) {
