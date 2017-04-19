@@ -16,8 +16,9 @@ var product = require('./routes/product');
 var finance = require('./routes/finance');
 var personnel = require('./routes/personnel');
 var productModel = require('./routes/productModel');
+var accessory = require('./routes/accessory');
 
-require('./storage/devSync')();
+// require('./storage/devSync')();
 
 var app = express();
 
@@ -56,6 +57,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // bootstrap and jquery
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap')));
 app.use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery')));
+app.use('/set-dom', express.static(path.join(__dirname, 'node_modules/set-dom')));
+app.use('/toprogress', express.static(path.join(__dirname, 'node_modules/toprogress')));
 
 // TODO: Dirty patch!!!!
 let PersonnelRole = require('eis-thinking').datatypes.PersonnelRole;
@@ -89,6 +92,7 @@ app.use('/product', product);
 app.use('/finance', finance);
 app.use('/personnel', personnel);
 app.use('/productModel', productModel);
+app.use('/accessory', accessory);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

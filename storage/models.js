@@ -1,8 +1,13 @@
 const Sequelize = require('sequelize');
 
-let sequelize = new Sequelize('eis', '', '', {
-    dialect: 'sqlite',
-    storage: __dirname + '/../test.db'
+// let sequelize = new Sequelize('eis', '', '', {
+    // dialect: 'sqlite',
+    // storage: __dirname + '/../test.db'
+// });
+
+let sequelize = new Sequelize('eis_internal', 'root', 'godtoknow', {
+    host: '158.182.109.232',
+    dialect: 'mysql'
 });
 
 exports.Customer = sequelize.define('customer', {
@@ -18,7 +23,8 @@ exports.Order = sequelize.define('order', {
     arriveTime: { type: Sequelize.INTEGER, field: 'arrive_time' },
     status: Sequelize.INTEGER,
     ctime: Sequelize.INTEGER,
-    mtime: Sequelize.INTEGER
+    mtime: Sequelize.INTEGER,
+    price: Sequelize.DOUBLE
     // products
 }, commonOps('Order'));
 
@@ -26,7 +32,7 @@ exports.Product = sequelize.define('product', {
     id: ID('eid'),
     serialNumber: { type: Sequelize.STRING, field: 'serial_number' },
     oid: { type: Sequelize.INTEGER, field: 'oid' },
-    modelId: { type: Sequelize.INTEGER, filed: 'pid' },
+    modelId: { type: Sequelize.INTEGER, field: 'pid' },
     // productModel: ProductModel,
     status: Sequelize.INTEGER,
     // accessories: Accessory[],
@@ -39,8 +45,8 @@ exports.Operation = sequelize.define('operation', {
     uid: Sequelize.INTEGER,
     ctime: Sequelize.INTEGER,
     action: Sequelize.STRING,
-    targetType: Sequelize.INTEGER,
-    targetId: Sequelize.INTEGER
+    targetType: { type: Sequelize.INTEGER, field: 'target_type' },
+    targetId: { type: Sequelize.INTEGER, field: 'target_id' }
 }, commonOps('operation'));
 
 exports.Accessory = sequelize.define('accesory', {
@@ -63,14 +69,14 @@ exports.ProductModel = sequelize.define('product_model', {
     primaryPrice: { type: Sequelize.INTEGER, field: 'primary_price' },
     imageUrl: { type: Sequelize.STRING, field: 'image_url' },
     screenSize: { type: Sequelize.INTEGER, field: 'screen_size' }
-}, commonOps('product_models'));
+}, commonOps('Product'));
 
 exports.FinanceRecords = sequelize.define('finance_record', {
     id: ID(),
     type: Sequelize.STRING,
     amount: Sequelize.INTEGER,
     description: Sequelize.STRING
-}, commonOps('finance_records'));
+}, commonOps('finance_record'));
 
 exports.Users = sequelize.define('user', {
     id: ID(),
@@ -79,20 +85,22 @@ exports.Users = sequelize.define('user', {
         uniqueKey: true
     },
     password: Sequelize.STRING,
-    firstname: Sequelize.STRING,
-    lastname: Sequelize.STRING,
+    firstName: { type: Sequelize.STRING, field: 'first_name' },
+    lastName: { type: Sequelize.STRING, field: 'last_name' },
     role: Sequelize.INTEGER,
     salary: Sequelize.INTEGER,
-    telephone: Sequelize.INTEGER
-}, commonOps('users'));
+    tel: Sequelize.INTEGER,
+    ctime: Sequelize.INTEGER
+}, commonOps('user'));
 
 exports.ProductModelAccMap = sequelize.define('mod_consist_acc', {
-    modelId: { type: Sequelize.INTEGER, primaryKey: true, filed: 'pid' },
+    modelId: { type: Sequelize.INTEGER, primaryKey: true, field: 'pid' },
     aid: { type: Sequelize.INTEGER, primaryKey: true }
 }, commonOps('pro_consist_acc'));
 
 exports.Supplier = sequelize.define('supplier', {
     id: ID('supplier_id'),
+    name: Sequelize.STRING,
     email: Sequelize.STRING,
     tele: Sequelize.STRING,
     address: Sequelize.STRING
@@ -101,7 +109,7 @@ exports.Supplier = sequelize.define('supplier', {
 
 
 function ID(fname) {
-    return { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, filed: fname };
+    return { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true, field: fname };
 }
 
 function commonOps(tableName) {
