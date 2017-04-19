@@ -5,15 +5,23 @@ var { isLogin } = require('./user');
 var { orders, products, operations } = require('../storage/__fake');
 var { datatypes } = require('eis-thinking');
 var { PersonnelRole, OperationTarget } = datatypes;
+var { Operation } = require('../storage/models');
+
+function getOwnOps(req, res, next) {
+  Operation.findAll({ where: { uid: req.session.user.id } }).then(ops => {
+    req.operations = ops;
+    next();
+  }).catch(err => next(err));
+}
 
 /* GET home page. */
-router.get('/', isLogin, function(req, res, next) {
+router.get('/', isLogin, getOwnOps, function(req, res, next) {
   res.render('index', {
     title: 'Welcome',
     indexPage: {
       dept: PersonnelRole[req.session.user.role].toLowerCase() + ' department',
       orderCount: 88,
-      operations: operations.filter(op => op.uid === req.session.user.id).map(viewOp)
+      operations: req.operations.map(viewOp)
     }
   });
 });
@@ -23,7 +31,7 @@ function viewOp(op) {
     actionName: actionTypeToStat(JSON.parse(op.action).type),
     targetTypeName: OperationTarget[op.targetType],
     targetUrl: `/${OperationTarget[op.targetType].toLowerCase()}/view/${op.targetId}`
-  }, op);
+  }, op.toJSON());
 }
 
 function actionTypeToStat(actionType) {

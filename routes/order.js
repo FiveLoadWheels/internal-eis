@@ -7,7 +7,7 @@ var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
 var stor = require('../storage');
 var { Operation } = require('../storage/models');
-var { operations } = require('../storage/__fake');
+// var { operations } = require('../storage/__fake');
 
 var orderRole = checkRole(hasActableRole);
 // 屏蔽角色权限
@@ -62,7 +62,7 @@ router.post('/handle/:id', getOrder, orderRole, checkPasswordConfirm, (req, res)
     let order = req.order;
     Promise.resolve(handleOrder(order, req.body))
     .then(() => {
-        operations.push({
+        Operation.create({
             uid: req.session.user.id,
             targetId: order.id,
             targetType: OperationTarget.Order,
@@ -106,19 +106,19 @@ function getAvailableActions(order, user) {
         return [];
     case OrderStatus.CustomerAcknowledged:
         return [
-            { id: '', viewName: 'Start Process (Perform automatically when product process starts)' , disabled: true}
+            { id: '', viewName: 'Start Process' , disabled: '(Perform automatically when product process starts)'}
         ];
     case OrderStatus.ProcessStarted:
         return [
-            { id: '', viewName: 'End Process (Perform automatically when product process all finish)' , disabled: true}
+            { id: '', viewName: 'End Process' , disabled: '(Perform automatically when product process all finished)'}
         ];
     case OrderStatus.ProcessFinished:
         return [
-            { id: 'START_DELIVERY', viewName: 'Start Delivery', disabled: !hasActableRole(order, user.role) }
+            { id: 'START_DELIVERY', viewName: 'Start Delivery', disabled: whenNotPermitted(order, user.role) }
         ];
     case OrderStatus.DeliveryStarted:
         return [
-            { id: 'END_DELIVERY', viewName: 'End Delivery', disabled: !hasActableRole(order, user.role) }
+            { id: 'END_DELIVERY', viewName: 'End Delivery', disabled: whenNotPermitted(order, user.role) }
         ];
     case OrderStatus.DeliveryFinished:
         return [];
@@ -127,6 +127,10 @@ function getAvailableActions(order, user) {
     default:
         return [];
     }
+}
+
+function whenNotPermitted(order, role) {
+    return !hasActableRole(order, role) ? 'Permission Denied' : null;
 }
 
 // 列表查看权 - 检查具有 role 身份的用户是否具有在左侧列表显示该记录的权限

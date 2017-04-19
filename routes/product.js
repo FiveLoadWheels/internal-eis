@@ -5,7 +5,8 @@ var { OrderStatus, ProductStatus, PersonnelRole, OperationTarget } = datatypes;
 var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
 var stor = require('../storage');
-var { operations } = require('../storage/__fake');
+var { Operation } = require('../storage/models');
+// var { operations } = require('../storage/__fake');
 
 var productActableRole = checkRole(hasActableRole);
 
@@ -60,7 +61,7 @@ router.post('/handle/:id', getProduct, productActableRole, checkPasswordConfirm,
     Promise.resolve(handleProduct(product, req.body))
     .then(() => {
         // save operation record
-        operations.push({
+        Operation.create({
             uid: req.session.user.id,
             targetId: product.id,
             targetType: OperationTarget.Product,
