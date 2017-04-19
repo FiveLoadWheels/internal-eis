@@ -17,6 +17,10 @@ buildActionForm(app, 'ProductPage', 'product');
 buildGetById(app, 'PersonnelPage', 'personnel');
 buildActionForm(app, 'PersonnelPage', 'personnel');
 
+// ====== FinancePageController =====
+
+buildActionForm(app, 'FinancePage', 'finance');
+
 // ====== Helpers ======
 
 function postJson(url, data) {

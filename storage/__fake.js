@@ -33,9 +33,16 @@ let users = [
     createUser(400135, '1008611', 'Nick', 'Ng', PersonnelRole.Production)
 ];
 
+let records = [
+    createFinanceRec(666666, 'salary', 666666, '1234567890'),
+    createFinanceRec(888888, 'salary', 888888, '1234567890'),
+    createFinanceRec(888888, 'sales', 888888, '1234567890'),
+];
+
 exports.products = products;
 exports.orders = orders;
 exports.users = users;
+exports.records = records;  
 exports.operations = [];
 
 
@@ -94,5 +101,16 @@ function createUser(id, password, firstName, lastName, role) {
         password: sha1(password),
         salary: 1234567890,
         role: role
+    };
+}
+
+function createFinanceRec(id, type, amount, description) {
+    return {
+        id: id,
+        type: type,
+        ctime: Date.now(),
+        mtime: Date.now(),
+        amount: amount,
+        description: description,
     };
 }
