@@ -127,3 +127,16 @@ html, body, #app {
 .clearfix::after {
     clear: both;
 }
+
+.default-list-view {
+    width: 100%;
+    overflow: hidden;
+    padding-top: 40px;
+}
+
+.default-list-view > .sidebar,
+.default-list-view > .content {
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 5%;
+}

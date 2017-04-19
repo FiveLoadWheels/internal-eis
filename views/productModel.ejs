@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="/stylesheets/product.css">
+<div class="ProductModelPage default-list-view clearfix" full-height>
+        <div class="sidebar col-xs-3">
+
+        <!-- <div class="form-group login-form">
+            <div class="input-group">
+                <div class="input-group-addon">
+                    Product #
+                </div>
+                <input class="form-control getById" placeholder="Product ID" value="<%= req.query.filter ? productModelPage.productModel.id : '' %>">
+            </div>
+        </div> -->
+
+        <div class="title">Models</div>
+        <% let modelId = productModelPage.productModel ? productModelPage.productModel.id : 0; %>
+        <% productModelPage.productModels.forEach(function(obj) { %>
+            <div class="objective" style="<%= modelId === obj.id ? 'background: #f1f1f1;': '' %>">
+                <a href="/productModel/view/<%= obj.id %>">
+                    <span class="glyphicon glyphicon-tasks"></span>
+                    <% if (modelId === obj.id) { %>
+                        <b>Product #<%= obj.id %></b>
+                    <% } else { %>
+                        Product #<%= obj.id %>
+                    <% } %>
+                </a>
+                <ul>
+                    <li>
+                        <span class="glyphicon glyphicon-time"></span>
+                        Primary Price: <%= obj.primaryPrice %>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-stats"></span>
+                        Name: <%= obj.modelName %>
+                    </li>
+                </ul>
+            </div>
+        <% }) %>
+    </div>
+
+    <div class="content col-xs-9">
+        <% if (modelId) { %>
+            <h1>ProductModel #<%= productModelPage.productModel.id %>: Summaries</h1>
+
+            <form action="/productModel/update/<%= modelId %>" method="POST">
+            <h2>Basic Information</h2>
+            <div class="card">
+                
+            </div>
+
+            <div class="form-group">
+                <div>Primary Price:</div>
+                <div><input class="form-control" type="text" name="primaryPrice"
+                    value="<%= productModelPage.productModel.primaryPrice %>"></div>
+            </div>
+
+            <div class="form-group">
+                <div>Model Name:</div>
+                <div><input class="form-control" type="text" name="modelName"
+                    value="<%= productModelPage.productModel.modelName %>"></div>
+            </div>
+            
+            <button class="btn btn-default" type="submit">Submit</button>
+
+            <h2>Candidate Accessories</h2>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <td>Used</td>
+                        <td>#</td>
+                        <td>Model Name</td>
+                        <td>Quantity</td>
+                        <td>Pirce</td>
+                        <td>Detail</td>
+                    </thead>
+
+                    <tbody>
+                        <% let selectedIds = productModelPage.productModel.accessoryIds; %>
+                        <% productModelPage.allAccessories.forEach((acc) => { %>
+                            <tr>
+                                <td>
+                                    <input
+                                        class=""
+                                        type="checkbox"
+                                        name="acc-<%= acc.id %>"
+                                        <%= selectedIds.indexOf(acc.id) >= 0 ? 'checked' : '' %> >
+                                    <label for="acc-<%= acc.id %>">Select</label>
+                                </td>
+                                <td><%= acc.id %></td>
+                                <td><%= acc.modelName %></td>
+                                <td><%= acc.quantity %></td>
+                                <td><%= acc.purchasePrice %></td>
+                                <td>
+                                    <a href="/accessory/view/<%= acc.id %>">Detail</a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+            </form>
+
+        <% } else { %>
+            <h2 style="color: #777">Select one model...</div>
+        <% } %>
+    </div>
+
+</div>

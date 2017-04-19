@@ -64,6 +64,11 @@ exports.ProductModel = sequelize.define('product_model', {
     screenSize: Sequelize.INTEGER
 }, commonOps('product_models'));
 
+exports.ProductModelAccMap = sequelize.define('mod_consist_acc', {
+    modelId: { type: Sequelize.INTEGER, primaryKey: true },
+    aid: { type: Sequelize.INTEGER, primaryKey: true }
+}, commonOps('mod_consist_acc'));
+
 function ID() {
     return { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true };
 }
