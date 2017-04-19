@@ -20,6 +20,12 @@ buildActionForm(app, 'PersonnelPage', 'personnel');
 // ====== FinancePageController =====
 
 buildActionForm(app, 'FinancePage', 'finance');
+app.on('click', '.FinancePage .modifyRec', (e) => {
+    let rec = JSON.parse(e.target.dataset.rec);
+    console.log('rec', rec);
+    // *** Apply rec to the modal ***
+    $('#modify-record-modal input[name=id]').val(rec.id);
+});
 
 // ====== Helpers ======
 

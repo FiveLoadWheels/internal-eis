@@ -107,7 +107,12 @@
                         <td><%= rec.description %></td>
                         <td>
                             <!--<a href="">Modify</a>-->
-                            <a type="button" data-toggle="modal" data-target="#modify-record-modal">Modify</a>
+                            <a type="button"
+                                class="modifyRec"
+                                data-rec="<%= JSON.stringify(rec) %>"
+                                data-toggle="modal" data-target="#modify-record-modal">
+                                Modify
+                            </a>
                         </td>
                     </tr>
                     <% }); %>
