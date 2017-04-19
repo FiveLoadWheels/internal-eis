@@ -1,5 +1,5 @@
 var datatypes = require('eis-thinking/lib/datatypes');
-var { handleOrder } = require('eis-thinking/lib/handle-order');
+var { handleOrder, handleProduct } = require('eis-thinking');
 var { OrderStatus, ProductStatus, PersonnelRole } = datatypes;
 var { sha1 } = require('../utils');
 
@@ -11,21 +11,14 @@ let products = [
 ];
 
 let orders = [
-    createFakeOrder(63, OrderStatus.ProcessStarted, products.slice(0,2)),
-
-    createFakeOrder(23, OrderStatus.DeliveryStarted, products.slice()),
-    createFakeOrder(25, OrderStatus.DeliveryStarted, products.slice()),
-    createFakeOrder(28, OrderStatus.ProcessFinished, products.slice()),
-    createFakeOrder(32, OrderStatus.DeliveryStarted, products.slice()),
-    createFakeOrder(35, OrderStatus.DeliveryStarted, products.slice()),
-    createFakeOrder(38, OrderStatus.ProcessFinished, products.slice()),
-    createFakeOrder(46, OrderStatus.ProcessFinished, products.slice()),
-    createFakeOrder(47, OrderStatus.ProcessFinished, products.slice()),
-    createFakeOrder(49, OrderStatus.ProcessFinished, products.slice()),
-    createFakeOrder(50, OrderStatus.ProcessFinished, products.slice()),
-    createFakeOrder(51, OrderStatus.DeliveryStarted, products.slice()),
-    createFakeOrder(53, OrderStatus.ProcessFinished, products.slice()),
-    createFakeOrder(55, OrderStatus.DeliveryStarted, products.slice()),
+    createFakeOrder(63, OrderStatus.ProcessStarted, [
+        createFakeProduct(1, ProductStatus.ComponentEnsured, 63),
+        createFakeProduct(2, ProductStatus.Initialized, 63),
+    ]),
+    createFakeOrder(23, OrderStatus.DeliveryStarted, [
+        createFakeProduct(1, ProductStatus.Ready, 63),
+        createFakeProduct(2, ProductStatus.Ready, 63),
+    ]),
 ];
 
 let users = [
@@ -33,6 +26,7 @@ let users = [
     createUser(400135, '1008611', 'Nick', 'Ng', PersonnelRole.Production)
 ];
 
+<<<<<<< HEAD
 let records = [
     createFinanceRec(666666, 'salary', 666666, '1234567890'),
     createFinanceRec(888888, 'salary', 888888, '1234567890'),
@@ -41,23 +35,25 @@ let records = [
 
 exports.products = products;
 exports.orders = orders;
+=======
+// exports.products = products;
+// exports.orders = orders;
+>>>>>>> 610804898f94410dcbb74103b8e38051c7bf8863
 exports.users = users;
 exports.records = records;  
 exports.operations = [];
-
-
+exports.createFakeOrder = createFakeOrder;
+exports.createFakeProduct = createFakeProduct;
 
 
 /** @returns {datatypes.IOrder} */
 function createFakeOrder(id, status, products) {
     let orderProto = {
-        id: id,
+        // id: id,
         ctime: Date.now(),
         mtime: Date.now(),
         status: status,
-        customer: {
-            id: 22,
-        },
+        cid: 22,
         products: products || [],
         arriveTime: undefined,
         address: 'Somewhere'
@@ -70,21 +66,16 @@ function createFakeOrder(id, status, products) {
 
 function createFakeProduct(id, status, oid) {
     return {
-        id: id,
-        serialNumber: undefined,
+        // id: id,
+        serialNumber: 'seri' + (+new Date) + Math.random(),
         status: status,
-        modelId: 0,
-        oid: oid,
-        accessories: [
-            {
-                id: 1,
-                modelName: 'Kingston 8G',
-                supplierId: 12, // Kingston
-                type: 'Memory',
-                purchasePrice: 120.0,
-                quantity: 99
-            }
-        ]
+        modelId: 1,
+        // oid: oid,
+        accessoryIds: [
+            1, 2
+        ],
+        ctime: Date.now(),
+        mtime: Date.now(),
     }
 }
 

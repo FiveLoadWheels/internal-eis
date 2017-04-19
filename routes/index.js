@@ -21,7 +21,8 @@ router.get('/', isLogin, function(req, res, next) {
 function viewOp(op) {
   return Object.assign({
     actionName: actionTypeToStat(JSON.parse(op.action).type),
-    targetTypeName: OperationTarget[op.targetType]
+    targetTypeName: OperationTarget[op.targetType],
+    targetUrl: `/${OperationTarget[op.targetType].toLowerCase()}/view/${op.targetId}`
   }, op);
 }
 

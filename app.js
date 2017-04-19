@@ -16,6 +16,8 @@ var product = require('./routes/product');
 var finance = require('./routes/finance');
 var personnel = require('./routes/personnel');
 
+require('./storage/devSync')();
+
 var app = express();
 
 // view engine setup
@@ -67,6 +69,12 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// view helpers
+app.use((req, res, next) => {
+  Object.assign(res.locals, require('./views/helpers'));
+  next();
+})
 
 app.get('/debug', (req, res) => {
   res.type('application/json');
