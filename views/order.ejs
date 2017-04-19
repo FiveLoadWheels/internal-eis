@@ -51,13 +51,16 @@
                 <h5>Action(s) for Current Order</h5>
 
                 <% orderPage.order.availableActions.forEach(function(action) { %>
-                    <button 
-                        class="btn btn-default"
-                        data-toggle="modal"
-                        data-target="#<%= actionTypeToId(action.id) + '-modal' %>"
-                        <%= action.disabled ? 'disabled' : '' %> >
-                        <%= action.viewName %>
-                    </button>
+                    <div>
+                        <button 
+                            class="btn btn-success"
+                            data-toggle="modal"
+                            data-target="#<%= actionTypeToId(action.id) + '-modal' %>"
+                            <%= action.disabled ? 'disabled' : '' %> >
+                            <%= action.viewName %>
+                        </button>
+                        <span class="text-danger"><%= action.disabled ? action.disabled : '' %></span>
+                    </div>
                 <% }) %>
             </div>
 
