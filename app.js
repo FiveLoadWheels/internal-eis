@@ -16,6 +16,8 @@ var product = require('./routes/product');
 var finance = require('./routes/finance');
 var personnel = require('./routes/personnel');
 
+require('./storage/devSync')();
+
 var app = express();
 
 // view engine setup

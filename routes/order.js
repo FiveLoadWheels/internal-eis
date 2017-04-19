@@ -5,21 +5,40 @@ var { handleOrder, datatypes } = require('eis-thinking');
 var { OrderStatus, PersonnelRole, OperationTarget } = datatypes;
 var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
-var { orders, operations } = require('../storage/__fake');
+var stor = require('../storage');
+var { Operation } = require('../storage/models');
+var { operations } = require('../storage/__fake');
 
 var orderRole = checkRole(hasActableRole);
 // 屏蔽角色权限
 // orderRole = checkRole(val => true);
 
-router.get('/view/:id', isLogin, (req, res) => {
-    let order = orders.find(o => o.id === Number(req.params.id));
+function getOrder(req, res, next) {
+    stor.orders.get(Number(req.params.id)).then(order => {
+        req.order = req.roleTarget = order;
+        next();
+    });
+}
+
+function getOrderList(req, res, next) {
+    stor.orders.getList({
+        where: getListViewCond(req.session.user.role)
+    }).then(orders => {
+        req.orders = orders;
+        next();
+    })
+}
+
+router.get('/view/:id', isLogin, getOrder, getOrderList, (req, res) => {
+    let order = req.order;
+    let orders = req.orders;
     let user = req.session.user;
     res.render('order', {
         title: 'Order #' + order.id,
         orderPage: {
             objectives: req.query.filter ?
                 [getOrderState(order, user)] :
-                orders.map(o => getOrderState(o, user)).filter(o => hasReadableRole(o, req.session.user.role)),
+                orders.map(o => getOrderState(o, user)),
             order: getOrderState(order, user),
             OrderStatus,
         },
@@ -27,17 +46,10 @@ router.get('/view/:id', isLogin, (req, res) => {
     });
 });
 
-router.post('/handle/:id',
-    (req, res, next) => {
-        // fetch order
-        req.roleTarget = orders.find(o => o.id === Number(req.params.id)); next()
-    },
-    orderRole,
-    checkPasswordConfirm,
-    (req, res) => {
+router.post('/handle/:id', getOrder, orderRole, checkPasswordConfirm, (req, res) => {
     console.log(req.body);
     // get order
-    let order = req.roleTarget;
+    let order = req.order;
     Promise.resolve(handleOrder(order, req.body))
     .then(() => {
         operations.push({
@@ -48,10 +60,11 @@ router.post('/handle/:id',
             ctime: Date.now()
         });
         // save order
-        res.json({ error: null });
+        return stor.orders.save(order);
     })
+    .then(() => res.json({ err: null }))
     .catch((err) => {
-        res.json({ error: String(err) });
+        res.json({ err: String(err) });
     });
 });
 
@@ -70,7 +83,10 @@ function getOrderState(order, user) {
     return Object.assign({
         statusName: OrderStatus[order.status],
         availableActions: getAvailableActions(order, user)
-    }, order);
+    },
+    order.toJSON(),
+    { products: order.products },
+    { customer: order.customer });
 }
 
 function getAvailableActions(order, user) {
@@ -119,6 +135,25 @@ function hasReadableRole(o, role) {
         return true;
     default:
         return false;
+    }
+}
+
+// 列表查看权(Cond) - 检查具有 role 身份的用户是否具有在左侧列表显示该记录的权限
+function getListViewCond(role) {
+    switch (role) {
+    // Production具有: 支付已经结束，且生产没有完成的订单的查看权
+    case PersonnelRole.Production:
+        return { status: { $gte: OrderStatus.CustomerAcknowledged, $lt: OrderStatus.ProcessFinished } };
+    // Logisitics具有: 生产已经结束，且没有完成配送的订单的查看权
+    case PersonnelRole.Logistics:
+        return { status: { $gte: OrderStatus.ProcessFinished , $lt: OrderStatus.DeliveryFinished } };
+    // 不作限制
+    case PersonnelRole.HumanResource:
+    case PersonnelRole.Finance:
+    case PersonnelRole.CustomerService:
+        return {};
+    default:
+        return { status: -1 };
     }
 }
 

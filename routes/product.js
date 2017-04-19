@@ -4,19 +4,37 @@ var { handleOrder, handleProduct, datatypes } = require('eis-thinking');
 var { OrderStatus, ProductStatus, PersonnelRole, OperationTarget } = datatypes;
 var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
-var { orders, products, operations } = require('../storage/__fake');
+var stor = require('../storage');
+var { operations } = require('../storage/__fake');
 
 var productActableRole = checkRole(hasActableRole);
 
-router.get('/view/:id', isLogin, (req, res) => {
-    let product = products.find(p => p.id === Number(req.params.id));
+function getProduct(req, res, next) {
+    stor.products.get(Number(req.params.id)).then(product => {
+        req.product = req.roleTarget = product;
+        next();
+    });
+}
+
+function getProductList(req, res, next) {
+    stor.products.getList({
+        where: { status: { gt: 1 } }
+    }).then(products => {
+        req.products = products;
+        next();
+    })
+}
+
+router.get('/view/:id', isLogin, getProduct, getProductList, (req, res) => {
+    let product = req.product;
+    let products = req.products;
     let user = req.session.user;
     res.render('product', {
         title: 'Product #' + product.id,
         productPage: {
             objectives: req.query.filter ?
                 [getProductState(product, user)] :
-                products.map(o => getProductState(o, user)).filter(o => o.status >= ProductStatus.Initialized),
+                products.map(o => getProductState(o, user)),
             product: getProductState(product, user),
             ProductStatus,
         },
@@ -24,18 +42,10 @@ router.get('/view/:id', isLogin, (req, res) => {
     });
 });
 
-router.post('/handle/:id',
-    (req, res, next) => {
-        // fetch product
-        req.roleTarget = products.find(p => p.id === Number(req.params.id));
-        next();
-    },
-    productActableRole,
-    checkPasswordConfirm,
-    (req, res) => {
+router.post('/handle/:id', getProduct, productActableRole, checkPasswordConfirm, (req, res) => {
     console.log(req.body);
     // get order
-    let product = products.find(p => p.id === Number(req.params.id));
+    let product = req.product;
     Promise.resolve(handleProduct(product, req.body))
     .then(() => {
         // save operation record
@@ -47,19 +57,21 @@ router.post('/handle/:id',
             ctime: Date.now()
         });
         // save product and get order
-        console.log(`Order #${product.oid} of product #${product.id}`, orders.find(o => o.id === product.oid));
-        return orders.find(o => o.id === product.oid);
+        // console.log(`Order #${product.oid} of product #${product.id}`, orders.find(o => o.id === product.oid));
+        return stor.products.save(product).then(() => stor.orders.get(product.oid));
     })
     .then((order) => {
         // peer handle
-        return handleOrder(order, { type: 'UPDATE_PRODUCT_PROCESS', payload: null });
+        handleOrder(order, { type: 'UPDATE_PRODUCT_PROCESS', payload: null });
+        return stor.orders.save(order);
         // then save order;
     })
     .then(() => {
-        res.json({ error: null });
+        res.json({ err: null });
     })
     .catch((err) => {
-        res.json({ error: err });
+        console.error(err);
+        res.json({ err: String(err) });
     });
 });
 
@@ -78,7 +90,10 @@ function getProductState(product, user) {
     return Object.assign({
         statusName: ProductStatus[product.status],
         availableActions: getAvailableActions(product, user)
-    }, product);
+    },
+    product.toJSON(),
+    { accessories: product.accessories },
+    { productModel: product.productModel });
 }
 
 function getAvailableActions(product, user) {
