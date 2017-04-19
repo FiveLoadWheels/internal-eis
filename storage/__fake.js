@@ -26,7 +26,6 @@ let users = [
     createUser(400135, '1008611', 'Nick', 'Ng', PersonnelRole.Production)
 ];
 
-<<<<<<< HEAD
 let records = [
     createFinanceRec(666666, 'salary', 666666, '1234567890'),
     createFinanceRec(888888, 'salary', 888888, '1234567890'),
@@ -35,10 +34,8 @@ let records = [
 
 exports.products = products;
 exports.orders = orders;
-=======
 // exports.products = products;
 // exports.orders = orders;
->>>>>>> 610804898f94410dcbb74103b8e38051c7bf8863
 exports.users = users;
 exports.records = records;  
 exports.operations = [];
