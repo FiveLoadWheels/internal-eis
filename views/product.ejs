@@ -1,12 +1,3 @@
-<%
-    function addSpace(str) {
-        return str.replace(/([A-Z])/g, ' $1').trim();
-    }
-
-    function actionTypeToId(type) {
-        return type.toLowerCase().replace(/_/g, '-');
-    }
-%>
 <link rel="stylesheet" href="/stylesheets/product.css">
 <div class="ProductPage clearfix" full-height>
         <div class="sidebar col-xs-3">
@@ -35,7 +26,7 @@
                 <ul>
                     <li>
                         <span class="glyphicon glyphicon-time"></span>
-                        Create at: <%= obj.ctime %>
+                        Create at: <%= tsToString(obj.ctime) %>
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-stats"></span>

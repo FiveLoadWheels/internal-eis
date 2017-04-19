@@ -24,7 +24,7 @@
               <b><%= op.targetTypeName + ' #' + op.targetId %></b>
             </a>
             <span>at</span>
-            <b><%= (new Date(op.ctime)).toString() %></b>
+            <b><%= tsToString(op.ctime) %></b>
         </div>
       <% }) %>
     </div>

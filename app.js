@@ -70,6 +70,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// view helpers
+app.use((req, res, next) => {
+  Object.assign(res.locals, require('./views/helpers'));
+  next();
+})
+
 app.get('/debug', (req, res) => {
   res.type('application/json');
   res.send(JSON.stringify(require('./storage/__fake'), null, 4));
