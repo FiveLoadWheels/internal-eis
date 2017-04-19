@@ -68,6 +68,21 @@ a {
 	color: #f1f1f1;
 }
 
+.nav-dropdown {
+	border: none !important;
+	display: block !important;
+	color: #000000 !important;
+	text-decoration: none !important;
+	float: left;
+}
+
+.nav-dropdown:hover {
+	background: rgba(0,0,0,0.3) !important;
+	background: #2289ab !important;
+	text-decoration: none !important;
+	color: #f1f1f1 !important;
+}
+
 .login-form > * {
 	margin-top: 5px;
 }
