@@ -82,24 +82,37 @@
 
         <h2>Records</h2>
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table id="fin-table" class="table table-hover" data-toggle="table"
+            data-toolbar="#toolbar"
+            data-show-toggle="true"
+            data-show-columns="true"
+            data-show-export="true"
+            data-minimum-count-columns="2"
+            data-show-pagination-switch="true"
+            data-pagination="true"
+            data-id-field="id"
+            data-page-list="[10, 25, 50, 100, ALL]"
+            data-show-footer="false"
+            data-response-handler="responseHandler">
                 <thead>
-                    <td>ID</td>
-                    <td>Type</td>
-                    <td>Create At</td>
-                    <td>Amount</td>
-                    <td>Description</td>
-                    <td>Manipulate</td>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Create At</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Manipulate</th>
+                    </tr>
                 </thead>
 
                 <tbody>
                     <% if (financePage.records[0]) { %>
                     <% financePage.records.forEach( function(rec) { %>
-                    <tr>
+                    <tr data-key="rec-<%= rec.id %>">
                         <td><%= rec.id %></td>
                         <td><%= rec.type %></td>
                         <td><%= rec.ctime %></td>
-                        <td><%= rec.amount %></td>
+                        <td><%="$ " + rec.amount %></td>
                         <td><%= rec.description %></td>
                         <td>
                             <a type="button"
@@ -115,7 +128,7 @@
                         <td><%= financePage.records.id %></td>
                         <td><%= financePage.records.type %></td>
                         <td><%= financePage.records.ctime %></td>
-                        <td><%= financePage.records.amount %></td>
+                        <td><%="$ " + financePage.records.amount %></td>
                         <td><%= financePage.records.description %></td>
                         <td>
                             <a type="button"
@@ -126,7 +139,7 @@
                             </a>
                         </td>
                     </tr>
-                    <% } %>
+                    <% } // financePage.records[financePage.records.length-1].id+1 %>
                 </tbody>
             </table>
         </div>
@@ -135,7 +148,7 @@
     <%- include('modal-layout', {
         viewId: 'add-record',
         viewName: 'Add Record',
-        body: include(`finance-forms/add-record`, {id: financePage.records[financePage.records.length-1].id+1})
+        body: include(`finance-forms/add-record`, {id: 0 })
     }); %>
 
     <%- include('modal-layout', {

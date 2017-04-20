@@ -18,6 +18,29 @@ function render(href) {
     });
 }
 
+function renderSubmit(form) {
+    let xhr = new XMLHttpRequest();
+    let data = Array.from($(form).find('input[name],select[name]')).map(i => [i.name, i.value]);
+    let url;
+    if (form.method.toLowerCase() === 'post') {
+        url = form.action
+        xhr.open(form.method, url);
+        xhr.send(form);
+    }
+    else {
+        url = form.action + '?' + data.map(e => `${e[0]}=${e[1]}`).join('&');
+        
+        xhr.open(form.method, url);
+        xhr.send(null);
+    }
+    xhr.onload = () => {
+        setDOM(document, xhr.responseText);
+        console.log(url);
+        history.pushState(null, null, url);
+    };
+    xhr.onerror = (err) => alert(err);
+}
+
 app.on('click', 'a[href]', (e) => {
     let a = e.target.tagName.toLowerCase() === 'a' ? $(e.target) : $(e.target).parents('a');
     let href = a.attr('href');
@@ -63,6 +86,9 @@ app.on('click', '.FinancePage .modifyRec', (e) => {
     $('#modify-record-modal input[name=description]').val(rec.description);
 
 });
+window.addEventListener('mount', (e) => {
+    $('#fin-table').bootstrapTable();
+}, true);
 
 // ====== Helpers ======
 
