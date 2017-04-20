@@ -1,5 +1,10 @@
 
 <br><br>
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<div class="container" style="text-align: center">
+    <h1 style="font-size: 5.5em">
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+    </h1>
+    <h2><%= message %></h2>
+    <h3><%= error.status || 505 %></h3>
+    <pre style="text-align: left"><%= error.toString() %></pre>
+</div>

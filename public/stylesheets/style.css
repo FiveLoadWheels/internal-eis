@@ -121,8 +121,14 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .objective {
+	display: block;
 	padding-top: 5px;
 	padding-bottom: 1px;
+	border-left: transparent solid 4px;
+}
+
+.objective:hover {
+	border-left: #2289ab solid 4px;
 }
 
 .card {
