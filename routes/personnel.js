@@ -59,7 +59,7 @@ router.post('/handle/:id', hrOnly, checkPasswordConfirm, (req, res) => {
         })
             .then( () => {res.json({ err:null })})
             .catch((err) => {
-                res.json({ err: String(err) });
+                res.json(   { err: String(err) });
             });
     break;
 
@@ -68,8 +68,7 @@ router.post('/handle/:id', hrOnly, checkPasswordConfirm, (req, res) => {
             return u.destroy();
         })
             .then( () => {
-                res.json({ err:null })
-                    .redirect(302, '/personnel/view/1');
+                res.redirect(302, '/personnel/view/1');
             })
             .catch((err) => {
                 res.json({ err: String(err) });
