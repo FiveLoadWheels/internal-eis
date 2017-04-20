@@ -1,6 +1,39 @@
 /// <reference types="jquery" />
 
-let app = $('#app');
+let app = $(document);
+
+// ====== Layout ======
+
+// let prog
+
+function render(href) {
+    let prog = new ToProgress({ color: '#8bb', duration: 0.2, height: '2px' }, '#progbar');
+    prog.increase(30);
+    return Promise.resolve($.get(href)).then(html => {
+        setDOM(document, html);
+    }, (jqXhr) => {
+        setDOM(document, jqXhr.responseText);
+    }).then(() => {
+        prog.finish();
+        ~function (prog) { setTimeout(() => $(prog.progressBar).remove(), 5000); }(prog);
+    });
+}
+
+app.on('click', 'a[href]', (e) => {
+    let a = e.target.tagName.toLowerCase() === 'a' ? $(e.target) : $(e.target).parent('a');
+    let href = a.attr('href');
+    if (href.indexOf('/') !== 0) {
+        return;
+    }
+
+    e.preventDefault();
+    console.log(href);
+    render(href).then(() => history.pushState(null, null, href));
+});
+
+window.onpopstate = (e) => {
+    render(location.href);
+};
 
 // ====== OrderPageController ======
 
@@ -58,7 +91,7 @@ function buildActionForm(app, controller, baseRoute) {
         let form = e.target;
         let actionType = form.dataset.action;
         let payload = {};
-        Array.from($(form).find('input[action-payload]')).forEach(el => {
+        Array.from($(form).find('input[action-payload],select[action-payload]')).forEach(el => {
             let dataType = JSONTypes[el.dataset.type];
             payload[el.name] = dataType(el.value);
         });

@@ -70,14 +70,14 @@ router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
     let action = req.body;
     switch (action.type) {
     case 'MODIFY_RECORD':
-        action.payload = {
-            // uid: req.session.user,
-            id: req.body.id,
-            type: req.body.type,
-            amount: req.body.amount,
-            description: req.body.description,
-        };
-        FinanceRecords.findById(action.payload.id).then( (record) => {
+        // action.payload = {
+        //     // uid: req.session.user,
+        //     id: req.body.id,
+        //     type: req.body.type,
+        //     amount: req.body.amount,
+        //     description: req.body.description,
+        // };
+        FinanceRecords.findById(Number(action.payload.id)).then( (record) => {
             record.type = action.payload.type;
             record.amount = action.payload.amount;
             record.description = action.payload.description;
@@ -91,18 +91,9 @@ router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
     break;
 
     case 'ADD_RECORD':
-        action.payload = {
-            // uid: req.session.user,
-            type: req.body.type,
-            amount: req.body.amount,
-            description: req.body.description,
-            ctime: Date.now(),
-        };
-        FinanceRecords.create(record)
-        .then( () => {res.json({ err:null })})
-        .catch((err) => {
-            res.json({ err: String(err) });
-        });
+        FinanceRecords
+            .create(Object.assign(action.payload, { ctime: Date.now() }))
+            .then(() => res.json({ err: null })).catch(err => res.json({ err: err }));
     break;
     }
 });

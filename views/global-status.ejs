@@ -1,0 +1,24 @@
+<div class="GlobalStatusPage" style="overflow: auto; margin-top: 40px; height: 100%">
+  <div class="container" style="padding-top: 20px">
+    <h3>Global Status</h3>
+
+      <!-- <thead>
+        <th>Who</th>
+        <th>Action</th>
+        <th>For</th>
+        <th>At</th>
+      </thead> -->
+      <% globalStatusPage.operations.forEach(op => { %>
+        <div style="font-size: 1.1em; border-top: #ddd solid 1px; padding: 20px 0">
+            <span><%= op.user.firstName + ' ' + op.user.lastName %></span> has performed 
+            <b>"<%= op.actionName %>" </b>action 
+            <span>for</span>
+            <a href="<%= op.targetUrl %>">
+              <b><%= op.targetTypeName + ' #' + op.targetId %></b>
+            </a>
+            <span>at</span>
+            <b><%= tsToString(op.ctime) %></b>
+        </div>
+      <% }) %>
+    </div>
+</div>

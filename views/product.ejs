@@ -39,18 +39,54 @@
 
     <div class="content col-xs-9">
         <% if (pid) { %>
-            <h1>Product #<%= productPage.product.id %>: Summaries</h1>
+            <h1>Product #<%= productPage.product.id %></h1>
 
-            <h2>Procedure</h2>
+            <h2>Details</h2>
             <div class="card">
-                <div class="subtitle">
-                    Current Status: <b><%= addSpace(productPage.ProductStatus[productPage.product.status]) %></b>
+                <div class="" style="padding-top: 8px;">
+                    Model Type: <b><%= productPage.product.productModel.modelName %></b>
+                </div>
+                <div class="" style="padding-top: 8px;">
+                    Serial Number: <b><%= productPage.product.serialNumber %></b>
+                </div>
+                <div class="" style="padding-top: 8px;">
+                    Total Price: <b>HKD <%=
+                        productPage.product.productModel.primaryPrice + 
+                        productPage.product.accessories.map(acc => acc.purchasePrice).reduce((a,b) => a + b)
+                    %></b>
+                </div>
+                <div class="" style="padding-top: 8px;">
+                    Depends On:
+                    <a href="/order/view/<%= productPage.product.oid %>">
+                        <b>Order #<%= productPage.product.oid %></b>
+                    </a>
+                </div>
+            </div>
+
+            <h2>Procedure & Actions</h2>
+            <div class="card">
+                <h5>Current Status</h5>
+                <div class="panel panel-default" style="padding: 10px">
+                    <% for (let i = 1; productPage.ProductStatus[i]; ++i) { %>
+                        <%
+                        let color = i <= productPage.product.status ? 'text-success' : 'text-muted';
+                        let statusName = `<span class="${color}">` + addSpace(productPage.ProductStatus[i]) + '</span>';
+                        %>
+                        <%- i === productPage.product.status ? `<b>${statusName}</b>` : statusName %> → 
+                    <% } %>
                 </div>
 
+                <h5>Available Action(s)</h5>
+
                 <% productPage.product.availableActions.forEach(function(action) { %>
-                    <button class="btn btn-success" data-toggle="modal" data-target="#<%= actionTypeToId(action.id) + '-modal' %>">
+                    <button class="btn btn-success"
+                    data-toggle="modal"
+                    data-target="#<%= actionTypeToId(action.id) + '-modal' %>"
+                    <%= action.disabled ? 'disabled' : '' %> >
                         <%= action.viewName %>
                     </button>
+
+                    <span class="text-danger"><%= action.disabled %></span>
                 <% }) %>
             </div>
 
@@ -69,7 +105,7 @@
                     <tbody>
                         <% productPage.product.accessories.forEach((acc) => { %>
                             <tr>
-                                <td><%= acc.id %></td>
+                                <td><%= acc.type %></td>
                                 <td><%= acc.modelName %></td>
                                 <td><%= acc.quantity %></td>
                                 <td><%= acc.purchasePrice %></td>
@@ -80,15 +116,6 @@
                         <% });%>
                     </tbody>
                 </table>
-            </div>
-
-            <h2>Term (Order)</h2>
-
-            <div>22% time spent in passed steps, 12 days 4 hours left</div>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%;">
-                    <span class="sr-only">22% Complete</span>
-                </div>
             </div>
         <% } else { %>
             <h2 style="color: #777">Select one product...</div>

@@ -2,11 +2,11 @@
 var express = require('express');
 var router = express.Router();
 var { handleOrder, datatypes } = require('eis-thinking');
-var { OrderStatus, PersonnelRole, OperationTarget } = datatypes;
+var { OrderStatus, ProductStatus, PersonnelRole, OperationTarget } = datatypes;
 var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
 var stor = require('../storage');
-var { Operation } = require('../storage/models');
+var { Operation, FinanceRecords } = require('../storage/models');
 // var { operations } = require('../storage/__fake');
 
 var orderRole = checkRole(hasActableRole);
@@ -51,6 +51,7 @@ router.get('/view/:id', isLogin, getOrder, getOrderList, (req, res) => {
                 orders.map(o => getOrderState(o, user)),
             order: orderState,
             OrderStatus,
+            ProductStatus
         },
         _query: req.query
     });
@@ -77,6 +78,30 @@ router.post('/handle/:id', getOrder, orderRole, checkPasswordConfirm, (req, res)
         res.json({ err: String(err) });
     });
 });
+
+// ipc job
+router.get('/ack/:id', getOrder, (req, res, next) => {
+    handleOrder(req.order, {
+        type: 'CUSTOMER_ACK',
+        payload: {
+            resolved: true
+        }
+    });
+
+    FinanceRecords.create({
+        type: 'Sales',
+        amount: order.price,
+        description: 'Sales of Order #' + req.params.id,
+        ctime: Date.now()
+    });
+
+    stor.orders.save(req.order)
+        .then(() => res.json({ err: null }))
+        .catch(err => {
+            console.error(err);
+            res.json({ err: err })
+        });
+})
 
 router.get('/debug', (req, res) => {
     res.type('text/plain');
@@ -145,7 +170,7 @@ function hasReadableRole(o, role) {
     // 不作限制
     case PersonnelRole.HumanResource:
     case PersonnelRole.Finance:
-    case PersonnelRole.CustomerService:
+    case PersonnelRole.Sales:
         return true;
     default:
         return false;
@@ -164,7 +189,7 @@ function getListViewCond(role) {
     // 不作限制
     case PersonnelRole.HumanResource:
     case PersonnelRole.Finance:
-    case PersonnelRole.CustomerService:
+    case PersonnelRole.Sales:
         return {};
     default:
         return { status: -1 };
@@ -180,8 +205,8 @@ function hasActableRole(o, role) {
     // Logisitics具有: 生产已经结束，且没有完成配送的订单的动作执行权
     case PersonnelRole.Logistics:
         return o.status >= OrderStatus.ProcessFinished && o.status < OrderStatus.DeliveryFinished;
-    // CustomerService具有: 已经完成创建，且用户没有完成支付的订单的动作执行权（特指修改权）
-    case PersonnelRole.CustomerService:
+    // Sales具有: 已经完成创建，且用户没有完成支付的订单的动作执行权（特指修改权）
+    case PersonnelRole.Sales:
         return o.status >= OrderStatus.Created && o.status < OrderStatus.CustomerAcknowledged;
     // 不能操作
     case PersonnelRole.HumanResource:

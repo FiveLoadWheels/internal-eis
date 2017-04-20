@@ -112,16 +112,20 @@ function getAvailableActions(product, user) {
     switch (product.status) {
     
     case ProductStatus.Initialized:
-        return [ { id: 'UPDATE_ACCESSORY', viewName: 'Update Accessory Status' } ];
+        return [ { id: 'UPDATE_ACCESSORY', viewName: 'Update Accessory Status', disabled: whenNotPermitted(product, user.role) } ];
     case ProductStatus.ComponentEnsured:
-        return [ { id: 'COMPLETE_ASSEMBLY', viewName: 'Complete Assembly' } ];
+        return [ { id: 'COMPLETE_ASSEMBLY', viewName: 'Complete Assembly', disabled: whenNotPermitted(product, user.role) } ];
     case ProductStatus.AssemblyCompleted:
-        return [ { id: 'PASS_CHECKING', viewName: 'Pass Checking' } ];
+        return [ { id: 'PASS_CHECKING', viewName: 'Pass Checking', disabled: whenNotPermitted(product, user.role) } ];
     case ProductStatus.Ready:
         return [];
     default:
         return [];
     }
+}
+
+function whenNotPermitted(product, role) {
+    return !hasActableRole(product, role) ? 'Permission Denied' : null;
 }
 
 function hasActableRole(o, role) {
