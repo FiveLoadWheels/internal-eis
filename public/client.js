@@ -4,14 +4,13 @@ let app = $(document);
 
 // ====== Layout ======
 
-// let prog
-
 function render(href) {
     let prog = new ToProgress({ color: '#8bb', duration: 0.2, height: '2px' }, '#progbar');
     prog.increase(30);
-    return Promise.resolve($.get(href)).then(html => {
+    let jqXhr = $.get(href, null, 'html');
+    return Promise.resolve(jqXhr).then(html => {
         setDOM(document, html);
-    }, (jqXhr) => {
+    }, () => {
         setDOM(document, jqXhr.responseText);
     }).then(() => {
         prog.finish();
@@ -20,7 +19,7 @@ function render(href) {
 }
 
 app.on('click', 'a[href]', (e) => {
-    let a = e.target.tagName.toLowerCase() === 'a' ? $(e.target) : $(e.target).parent('a');
+    let a = e.target.tagName.toLowerCase() === 'a' ? $(e.target) : $(e.target).parents('a');
     let href = a.attr('href');
     if (href.indexOf('/') !== 0) {
         return;
@@ -80,7 +79,12 @@ function postJson(url, data) {
 function buildGetById(app, controller, baseRoute) {
     app.on('keyup', `.${controller} .getById`, (e) => {
         if (e.keyCode === 13) {
-            location.href = `/${baseRoute}/view/` + e.target.value + '?filter=1';
+            if (e.target.value.trim()) {
+                render(`/${baseRoute}/view/` + e.target.value.trim() + '?filter=1');
+            }
+            else {
+                render(location.pathname);
+            }
         }
     });
 }
@@ -89,6 +93,7 @@ function buildActionForm(app, controller, baseRoute) {
     app.on('submit', `.${controller} form.handleAction`, (e) => {
         e.preventDefault();
         let form = e.target;
+        let modal = $(form).parents('.modal');
         let actionType = form.dataset.action;
         let payload = {};
         Array.from($(form).find('input[action-payload],select[action-payload]')).forEach(el => {
@@ -110,8 +115,9 @@ function buildActionForm(app, controller, baseRoute) {
             }
             console.log(result);
             // store.dispatch({ action: 'HANDLE_COMPLETE' });
-            alert('Action completed.');
-            location.reload();
+            // alert('Action completed.');
+            modal.modal('hide');
+            modal.one('hidden.bs.modal', () => render(''));
         })
         .catch(err => {
             console.error(err);

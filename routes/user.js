@@ -45,7 +45,7 @@ router.checkRole = function buildCheckRole(matchRole) {
       }
     }
     
-    throw new Error('Permisson is not granted.');
+    throw new Error('Permission is not granted.');
   }
 };
 

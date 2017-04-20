@@ -101,6 +101,10 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+function wantsJSON(req) {
+  return (req.get('Accept') && req.get('Accept').indexOf('json') >= 0);
+}
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -109,7 +113,12 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  if (wantsJSON(req)) {
+    res.json({ err: err.message });
+  }
+  else {
+    res.render('error');
+  }
 });
 
 module.exports = app;
