@@ -70,8 +70,13 @@ function postJson(url, data) {
     return Promise.resolve($.post({
         url: url,
         data: JSON.stringify(data),
-        contentType: 'application/json'
-    }));
+        contentType: 'application/json',
+        headers: {
+            accept: 'application/json'
+        }
+    })).catch(jqXhr => {
+        throw JSON.parse(jqXhr.responseText).err;
+    });
 }
 
 // ====== Control Builders ======

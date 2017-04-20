@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var { sha1 } = require('../utils');
+var { sha1, RequestError } = require('../utils');
 var { Users } = require('../storage/models');
 var users = require('../storage/__fake').users;
 
@@ -10,7 +10,7 @@ function getUser(req, res, next) {
   }).then((user) => {
     req.user = user;
     next();
-  }).catch(err => next(err));
+  }).catch(err => next(new RequestError('Failed to find user', 503, err)));
 }
 
 /* GET users listing. */
@@ -45,7 +45,7 @@ router.checkRole = function buildCheckRole(matchRole) {
       }
     }
     
-    throw new Error('Permission is not granted.');
+    throw new RequestError('Permission is not granted.', 403, null);
   }
 };
 
@@ -65,7 +65,7 @@ router.checkPasswordConfirm = function checkPasswordConfirm(req, res, next) {
     next();
   }
   else {
-    res.json({ err: 'Incorrect password' });
+    next(new RequestError('Incorrect password', 400, null));
   }
 }
 
