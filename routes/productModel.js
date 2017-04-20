@@ -62,6 +62,7 @@ router.post('/update/:id', isLogin, getOne, (req, res, next) => {
     productModel.primaryPrice = Number(req.body.primaryPrice);
     productModel.modelName = req.body.modelName;
     productModel.accessoryIds = newAccIds;
+    productModel.imageUrl = req.body.imageUrl;
     stor.productModels.save(productModel).then(() => {
         res.redirect(302, '/productModel/view/' + modelId);
     }).catch(err => {

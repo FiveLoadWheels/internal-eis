@@ -73,7 +73,7 @@ module.exports = function testSync() {
 
     // let { Order, Accessory, Customer, Product, ProductAccMap, ProductModel, Operation } = models;
 
-    return Promise.all([
+    // return Promise.all([
         // models.Order.sync({ force }),
         // models.Accessory.sync({ force }),
         // models.Customer.sync({ force }),
@@ -81,20 +81,20 @@ module.exports = function testSync() {
         // models.ProductAccMap.sync({ force }),
         // models.ProductModel.sync({ force }),
         // models.ProductModelAccMap.sync({ force }),
-        models.Operation.sync({ force: true }),
-        models.FinanceRecords.sync({ force:true }),
+        // models.Operation.sync({ force: true }),
+        // models.FinanceRecords.sync({ force:true }),
         // models.Supplier.sync({ force })
-    ]).then(() => {
-        return [
-            insertOrder(orders.shift()),
-            insertMisc(),
-            insertRecords(),
-        ];
-    }).then(() => {
-        console.log('DevSync done.');
-    }).catch(err => {
-        console.error(err);
-    });
+    // ]).then(() => {
+    //     return [
+    //         insertOrder(orders.shift()),
+    //         insertMisc(),
+    //         insertRecords(),
+    //     ];
+    // }).then(() => {
+    //     console.log('DevSync done.');
+    // }).catch(err => {
+    //     console.error(err);
+    // });
 
     function insertRecords() {
         let DefineRecs = models.FinanceRecords;
@@ -130,12 +130,15 @@ module.exports = function testSync() {
                 ctime: Date.now(),
             },
         ].map(r => models.FinanceRecords.create(r));
+
         return Promise.all(records);
-    };
+    }
+
+    return insertRecords();
 }
 
 
-
+module.exports();
 
 
 

@@ -9,13 +9,13 @@ let app = $(document);
 function render(href) {
     let prog = new ToProgress({ color: '#8bb', duration: 0.2, height: '2px' }, '#progbar');
     prog.increase(30);
-    return $.get(href).then(html => {
+    return Promise.resolve($.get(href)).then(html => {
         setDOM(document, html);
-        prog.finish();
-        ~function (prog) { setTimeout(() => $(prog.progressBar).remove(), 5000); }(prog)
-    }).fail((jqXhr) => {
+    }, (jqXhr) => {
         setDOM(document, jqXhr.responseText);
-        ~function (prog) { setTimeout(() => $(prog.progressBar).remove(), 5000); }(prog)
+    }).then(() => {
+        prog.finish();
+        ~function (prog) { setTimeout(() => $(prog.progressBar).remove(), 5000); }(prog);
     });
 }
 
@@ -90,7 +90,7 @@ function buildActionForm(app, controller, baseRoute) {
         let form = e.target;
         let actionType = form.dataset.action;
         let payload = {};
-        Array.from($(form).find('input[action-payload]')).forEach(el => {
+        Array.from($(form).find('input[action-payload],select[action-payload]')).forEach(el => {
             let dataType = JSONTypes[el.dataset.type];
             payload[el.name] = dataType(el.value);
         });

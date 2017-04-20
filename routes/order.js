@@ -6,7 +6,7 @@ var { OrderStatus, ProductStatus, PersonnelRole, OperationTarget } = datatypes;
 var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 
 var stor = require('../storage');
-var { Operation } = require('../storage/models');
+var { Operation, FinanceRecords } = require('../storage/models');
 // var { operations } = require('../storage/__fake');
 
 var orderRole = checkRole(hasActableRole);
@@ -86,6 +86,13 @@ router.get('/ack/:id', getOrder, (req, res, next) => {
         payload: {
             resolved: true
         }
+    });
+
+    FinanceRecords.create({
+        type: 'Sales',
+        amount: order.price,
+        description: 'Sales of Order #' + req.params.id,
+        ctime: Date.now()
     });
 
     stor.orders.save(req.order)
