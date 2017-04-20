@@ -85,7 +85,10 @@ exports.Users = sequelize.define('user', {
     lastname: Sequelize.STRING,
     role: Sequelize.INTEGER,
     salary: Sequelize.INTEGER,
-    telephone: Sequelize.INTEGER
+    telephone: Sequelize.INTEGER,
+    ctime: Sequelize.DATE,
+    mtime: Sequelize.DATE,
+    retireTime: Sequelize.DATE,
 }, commonOps('users'));
 
 exports.ProductModelAccMap = sequelize.define('mod_consist_acc', {

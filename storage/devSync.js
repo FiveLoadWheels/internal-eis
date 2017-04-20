@@ -3,6 +3,7 @@ let models = require('./models');
 var { handleOrder, handleProduct, datatypes } = require('eis-thinking');
 var { OrderStatus, ProductStatus, PersonnelRole } = datatypes;
 let { createFakeOrder, createFakeProduct } = require('./__fake');
+var { sha1 } = require('../utils');
 
 let orders = [
     createFakeOrder(63, OrderStatus.ProcessStarted, [
@@ -68,11 +69,13 @@ module.exports = function testSync() {
         models.ProductModelAccMap.sync({ force }),
         models.Operation.sync({ force }),
         models.FinanceRecords.sync({ force:true }),
+        models.Users.sync({ force:true }),
     ]).then(() => {
         return [
             insertOrder(orders.shift()),
             insertMisc(),
             insertRecords(),
+            insertUsers(),
         ];
     }).then(() => {
         console.log('DevSync done.');
@@ -81,7 +84,6 @@ module.exports = function testSync() {
     });
 
     function insertRecords() {
-        let DefineRecs = models.FinanceRecords;
         let records = [
             {
                 type: 'salary',
@@ -114,6 +116,36 @@ module.exports = function testSync() {
                 ctime: Date.now(),
             },
         ].map(r => models.FinanceRecords.create(r));
+        return Promise.all(records);
+    };
+
+    function insertUsers() {
+        let users = [
+            {
+                acount: 400132,
+                password: sha1('1008611'),
+                firstname: 'Kai-shek',
+                lastname: 'Chiang',
+                role: PersonnelRole.Logistics,
+                salary: 12345,
+                telephone: '000-0000000',
+                ctime: Date.now(),
+                mtime: null,
+                retireTime: null,
+            },
+            {
+                acount: 400135,
+                password: sha1('1008611'),
+                firstname: 'Nick',
+                lastname: 'Ng',
+                role: PersonnelRole.Production,
+                salary: 12345,
+                telephone: '000-0000000',
+                ctime: Date.now(),
+                mtime: null,
+                retireTime: null,
+            },
+        ].map(r => models.Users.create(r));
         return Promise.all(records);
     };
 }
