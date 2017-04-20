@@ -182,7 +182,7 @@ function getListViewCond(role) {
     switch (role) {
     // Production具有: 支付已经结束，且生产没有完成的订单的查看权
     case PersonnelRole.Production:
-        return { status: { $gte: OrderStatus.CustomerAcknowledged, $lt: OrderStatus.ProcessFinished } };
+        return { status: { $gte: OrderStatus.Created, $lt: OrderStatus.ProcessFinished } };
     // Logisitics具有: 生产已经结束，且没有完成配送的订单的查看权
     case PersonnelRole.Logistics:
         return { status: { $gte: OrderStatus.ProcessFinished , $lt: OrderStatus.DeliveryFinished } };
@@ -195,6 +195,8 @@ function getListViewCond(role) {
         return { status: -1 };
     }
 }
+
+router.getRoleScope = getListViewCond;
 
 // 动作执行权 - 检查具有 role 身份的用户是否有对该记录执行修改动作的权限
 function hasActableRole(o, role) {

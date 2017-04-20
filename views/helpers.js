@@ -10,12 +10,16 @@ module.exports = {
     tsToString(ts) {
         let date = new Date(ts);
         let YYYY = date.getFullYear(),
-            MM = date.getMonth(),
+            MM = date.getMonth() + 1,
             DD = date.getDate(),
             hh = date.getHours(),
             mm = date.getMinutes(),
             ss = date.getSeconds()
         
-        return `${YYYY}/${MM}/${DD} ${hh}:${mm}:${ss}`;
+        return `${YYYY}/${xx(MM)}/${xx(DD)} ${xx(hh)}:${xx(mm)}:${xx(ss)}`;
     }
+}
+
+function xx(x) {
+    return x.toString().length === 1 ? '0' + x : x;
 }
