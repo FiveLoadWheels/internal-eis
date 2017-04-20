@@ -5,22 +5,30 @@ var { isLogin } = require('./user');
 // var { orders, products, operations } = require('../storage/__fake');
 var { datatypes } = require('eis-thinking');
 var { PersonnelRole, OperationTarget } = datatypes;
-var { Operation } = require('../storage/models');
+var { Operation, Order } = require('../storage/models');
+var { getRoleScope } = require('./order');
 
 function getOwnOps(req, res, next) {
-  Operation.findAll({ where: { uid: req.session.user.id } }).then(ops => {
+  Operation.findAll({ where: { uid: req.session.user.account } }).then(ops => {
     req.operations = ops;
     next();
   }).catch(err => next(err));
 }
 
+function getOrderCount(req, res, next) {
+  Order.count({ where: getRoleScope(req.session.user.role) }).then(c => {
+    req.orderCount = c;
+    next();
+  }).catch(err => next(err));
+}
+
 /* GET home page. */
-router.get('/', isLogin, getOwnOps, function(req, res, next) {
+router.get('/', isLogin, getOwnOps, getOrderCount, function(req, res, next) {
   res.render('index', {
     title: 'Welcome',
     indexPage: {
       dept: PersonnelRole[req.session.user.role].toLowerCase() + ' department',
-      orderCount: 88,
+      orderCount: req.orderCount,
       operations: req.operations.map(viewOp)
     }
   });
