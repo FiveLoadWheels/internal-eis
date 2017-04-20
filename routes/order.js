@@ -90,7 +90,7 @@ router.get('/ack/:id', getOrder, (req, res, next) => {
 
     FinanceRecords.create({
         type: 'Sales',
-        amount: order.price,
+        amount: req.order.price,
         description: 'Sales of Order #' + req.params.id,
         ctime: Date.now()
     });
