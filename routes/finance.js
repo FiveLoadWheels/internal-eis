@@ -66,6 +66,7 @@ router.get('/search', isLogin, findID, findMore, function(req, res, next) {
 });
 
 router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
+    console.log(req.body.payload);
     let action = req.body;
     switch (action.type) {
     case 'MODIFY_RECORD':
@@ -82,6 +83,10 @@ router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
             record.description = action.payload.description;
             record.mtime = Date.now();
             return record.save();
+        })
+        .then( () => {res.json({ err:null })})
+        .catch((err) => {
+            res.json({ err: String(err) });
         });
     break;
 
@@ -93,7 +98,11 @@ router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
             description: req.body.description,
             ctime: Date.now(),
         };
-        FinanceRecords.create(record);
+        FinanceRecords.create(record)
+        .then( () => {res.json({ err:null })})
+        .catch((err) => {
+            res.json({ err: String(err) });
+        });
     break;
     }
 });

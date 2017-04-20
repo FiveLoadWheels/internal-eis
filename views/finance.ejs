@@ -135,7 +135,7 @@
     <%- include('modal-layout', {
         viewId: 'add-record',
         viewName: 'Add Record',
-        body: include(`finance-forms/add-record`)
+        body: include(`finance-forms/add-record`, {id: financePage.records[financePage.records.length-1].id+1})
     }); %>
 
     <%- include('modal-layout', {

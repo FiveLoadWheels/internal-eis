@@ -24,6 +24,7 @@ app.on('click', '.FinancePage .modifyRec', (e) => {
     let rec = JSON.parse(e.target.dataset.rec);
     console.log('rec', rec);
     // *** Apply rec to the modal ***
+    $('#modify-record-modal form[name=id]').attr("data-id", rec.id);
     $('#modify-record-modal input[name=id]').val(rec.id);
     $('#modify-record-modal select[name=type]').val(rec.type);
     $('#modify-record-modal input[name=amount]').val(rec.amount);
