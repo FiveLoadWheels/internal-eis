@@ -17,19 +17,23 @@ function findUsers(req, res, next) {
 }
 
 function findUser(req, res, next) {
-    Users.findById(Number(req.params.id)).then( (user) => {
-        req.user = user;
+    if (req.params.id) {
+        Users.findById(Number(req.params.id)).then( (user) => {
+            req.user = user;
+            next();
+        }).catch(err => next(err));
+    } else {
+        req.user = 0;
         next();
-    }).catch(err => next(err));
+    }
 }
 
-router.get('/', isLogin, hrOnly, findUsers, (req, res) => {
-    let { allUsers } = req;
-    console.log(allUsers);
+router.get('/', isLogin, hrOnly, findUser, findUsers, (req, res) => {
     res.render('personnel', {
         title: 'HR',
         personnelPage: {
-            users: allUsers
+            users: req.allUsers,
+            user: req.user
         }
     });
 });
