@@ -68,7 +68,7 @@ router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
         })
             .then( () => {
                 res.json({ err:null });
-                res.redirect(302, '/personnel/view/1');
+                res.redirect(302, '/view/1');
             })
             .catch((err) => {
                 res.json({ err: String(err) });
