@@ -10,7 +10,7 @@
       </thead> -->
       <% globalStatusPage.operations.forEach(op => { %>
         <div style="font-size: 1.1em; border-top: #ddd solid 1px; padding: 20px 0">
-            <span><%= op.user.firstName + ' ' + op.user.lastName %></span> has performed 
+            <span>User #<%= op.uid %></span> has performed 
             <b>"<%= op.actionName %>" </b>action 
             <span>for</span>
             <a href="<%= op.targetUrl %>">

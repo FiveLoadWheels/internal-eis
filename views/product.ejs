@@ -47,9 +47,6 @@
                     Model Type: <b><%= productPage.product.productModel.modelName %></b>
                 </div>
                 <div class="" style="padding-top: 8px;">
-                    Serial Number: <b><%= productPage.product.serialNumber %></b>
-                </div>
-                <div class="" style="padding-top: 8px;">
                     Total Price: <b>HKD <%=
                         productPage.product.productModel.primaryPrice + 
                         productPage.product.accessories.map(acc => acc.purchasePrice).reduce((a,b) => a + b)
@@ -118,7 +115,10 @@
                 </table>
             </div>
         <% } else { %>
-            <h2 style="color: #777">Select one product...</div>
+            <h1 style="color: #777; line-height: 100%; text-align: center; padding-top: 30%;">
+                <span class="glyphicon glyphicon-tasks"></span>
+            </h1>
+            <h2 style="color: #777; line-height: 100%; text-align: center;">Select one product...</h2>
         <% } %>
     </div>
 
