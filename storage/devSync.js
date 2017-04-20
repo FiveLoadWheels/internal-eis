@@ -135,41 +135,36 @@ module.exports = function testSync() {
     };
 
     function insertUsers() {
+        
         let users = [
-            {
-                acount: 400132,
-                password: sha1('1008611'),
-                firstname: 'Kai-shek',
-                lastname: 'Chiang',
-                role: PersonnelRole.Logistics,
-                salary: 12345,
-                telephone: '000-0000000',
-                ctime: Date.now(),
-                mtime: null,
-                retireTime: null,
-            },
-            {
-                acount: 400135,
-                password: sha1('1008611'),
-                firstname: 'Nick',
-                lastname: 'Ng',
-                role: PersonnelRole.Production,
-                salary: 12345,
-                telephone: '000-0000000',
-                ctime: Date.now(),
-                mtime: null,
-                retireTime: null,
-            },
+            createUser(400132, '1008611', 'Kai-shek', 'Chiang', PersonnelRole.Logistics),
+            createUser(400135, '1008611', 'Steve', 'Jobs', PersonnelRole.Production),
+            createUser(400136, '1008611', 'Bill', 'Gates', PersonnelRole.Finanace),
+            createUser(400137, '1008611', 'Linus', 'Torvalds', PersonnelRole.HumanResource),
+            createUser(400138, '1008611', 'Richard', 'Stallman', PersonnelRole.Sales),
         ].map(r => models.Users.create(r));
-        return Promise.all(records);
+
+        return Promise.all(users);
     };
 
-    return insertRecords();
+    return insertUsers();
 }
 
 
 module.exports();
 
+function createUser(account, password, firstName, lastName, role) {
+    return {
+        account: account,
+        password: sha1('1008611'),
+        firstName: firstName,
+        lastName: lastName,
+        role: role,
+        salary: 12345,
+        tel: '000-0000000',
+        ctime: Date.now()
+    };
+}
 
 
 // stor.orders.get(2).then(order => {

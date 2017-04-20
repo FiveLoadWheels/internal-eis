@@ -1,17 +1,25 @@
 var express = require('express');
 var router = express.Router();
 var { sha1 } = require('../utils');
-
+var { Users } = require('../storage/models');
 var users = require('../storage/__fake').users;
+
+function getUser(req, res, next) {
+  return Users.findOne({
+    where: { account: Number(req.body.id), password: sha1(req.body.password) }
+  }).then((user) => {
+    req.user = user;
+    next();
+  }).catch(err => next(err));
+}
 
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
-router.post('/login', (req, res) => {
-  let user = users.find(u => u.id === Number(req.body.id) &&
-    u.password === sha1(req.body.password));
+router.post('/login', getUser, (req, res) => {
+  let user = req.user.toJSON();
   if (!user) return res.render('login', { err: 'Bad id or password' });
   req.session.regenerate((err) => {
     if (err) return res.render('login', { err: err });
