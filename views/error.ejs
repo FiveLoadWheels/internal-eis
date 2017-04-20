@@ -5,6 +5,8 @@
         <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
     </h1>
     <h2><%= message %></h2>
-    <h3><%= error.status || 505 %></h3>
-    <pre style="text-align: left"><%= error.toString() %></pre>
+    <h3><%= status %></h3>
+    <% if (error.stack) { %>
+        <pre style="text-align: left"><%= error.toString() %></pre>
+    <% } %>
 </div>
