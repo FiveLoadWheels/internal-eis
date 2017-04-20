@@ -45,7 +45,7 @@ router.checkRole = function buildCheckRole(matchRole) {
       }
     }
     
-    return res.json({ err: 'Permisson Denied' });
+    throw new Error('Permisson is not granted.');
   }
 };
 

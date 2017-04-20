@@ -7,6 +7,7 @@ var { PersonnelRole, OperationTarget } = datatypes;
 var { Operation, Users } = require('../storage/models');
 
 var users = require('../storage/__fake').users;
+var hrOnly = checkRole((target, role) => role === PersonnelRole.HumanResource);
 
 function findUsers(req, res, next) {
     Users.findAll({}).then( (allUsers) => {
@@ -22,7 +23,7 @@ function findUser(req, res, next) {
     }).catch(err => next(err));
 }
 
-router.get('/', isLogin, findUsers, (req, res) => {
+router.get('/', isLogin, hrOnly, findUsers, (req, res) => {
     let { allUsers } = req;
     console.log(allUsers);
     res.render('personnel', {
@@ -33,7 +34,7 @@ router.get('/', isLogin, findUsers, (req, res) => {
     });
 });
 
-router.get('/view/:id', isLogin, findUser, findUsers, (req, res) => {
+router.get('/view/:id', isLogin, hrOnly, findUser, findUsers, (req, res) => {
     res.render('personnel', {
         title: 'User #' + req.user.id,
         personnelPage: {
@@ -43,7 +44,7 @@ router.get('/view/:id', isLogin, findUser, findUsers, (req, res) => {
     })
 });
 
-router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
+router.post('/handle/:id', hrOnly, checkPasswordConfirm, (req, res) => {
     let user = Users.findById(req.params.id);
     let action = req.body;
     switch (action.type) {
@@ -108,7 +109,7 @@ function actionTypeToStat(actionType) {
   return actionType.split('_').map(n => n.toLowerCase()).join(' ');
 }
 
-router.get('/global', getOpList, (req, res, next) => {
+router.get('/global', isLogin, hrOnly, getOpList, (req, res, next) => {
     res.render('global-status', {
         title: 'Global Status',
         globalStatusPage: {
