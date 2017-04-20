@@ -5,6 +5,7 @@ var { isLogin, checkRole, checkPasswordConfirm } = require('./user');
 var { datatypes } = require('eis-thinking');
 var { PersonnelRole, OperationTarget } = datatypes;
 var { Operation, Users } = require('../storage/models');
+var { sha1 } = require('../utils');
 
 var users = require('../storage/__fake').users;
 var hrOnly = checkRole((target, role) => role === PersonnelRole.HumanResource);
@@ -54,9 +55,9 @@ router.post('/handle/:id', hrOnly, checkPasswordConfirm, (req, res) => {
     switch (action.type) {
     case 'MODIFY_USER':
         Users.findById(Number(action.payload.id)).then( (u) => {
-            u.password = action.payload.password;
+            u.password = sha1(action.payload.password);
             u.firstName = action.payload.firstName;
-            u.role = action.payload.role
+            u.role = action.payload.role;
             u.salary = action.payload.salary;
             u.tel = action.payload.tel;
             return u.save();
@@ -81,7 +82,7 @@ router.post('/handle/:id', hrOnly, checkPasswordConfirm, (req, res) => {
 
     case 'ADD_USER':
         Users
-            .create(Object.assign(action.payload, { ctime: Date.now() }))
+            .create(Object.assign(action.payload, { ctime: Date.now(), password: sha1(action.payload.password) }))
             .then(() => res.json({ err: null })).catch(err => res.json({ err: err }));
     break;
     }
