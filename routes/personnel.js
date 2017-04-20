@@ -58,7 +58,7 @@ router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
         })
             .then( () => {res.json({ err:null })})
             .catch((err) => {
-                res.json({ err: String(err) });
+                res.json(   { err: String(err) });
             });
     break;
 
