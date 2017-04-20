@@ -16,49 +16,69 @@
 	<div class="form-group">
 		<label for="password" class="col-sm-2 control-label">Account Password</label>
 		<div class="col-sm-10">
-			<input type="password" class="form-control" name="password" placeholder="Input password to confirm your identity">
+			<input type="password" class="form-control" name="passwordConfirm" placeholder="Input password to confirm your identity">
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="id" class="col-sm-2 control-label">ID</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="id" value="<%= id %>" disabled>
+			<input type="string" action-payload data-type="String"  class="form-control" name="id" value="<%= id %>" disabled>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="account" class="col-sm-2 control-label">Account</label>
+		<div class="col-sm-10">
+			<input type="number" class="form-control" name="account" value="<%= person.account %>" disabled>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="password" class="col-sm-2 control-label">Reset Password</label>
+		<div class="col-sm-10">
+			<input type="password" action-payload data-type="String" class="form-control" name="password" value="<%= person.password %>">
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="firstName" class="col-sm-2 control-label">First Name</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="firstName" value="<%= user.firstName %>">
+			<input type="text" action-payload data-type="String" class="form-control" name="firstName" value="<%= person.firstName %>">
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="lastName" class="col-sm-2 control-label">Last Name</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="lastName" value="<%= user.lastName %>">
+			<input type="text" action-payload data-type="String" class="form-control" name="lastName" value="<%= person.lastName %>">
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label for="dept" class="col-sm-2 control-label">Department</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" name="dept" value="<%= PersonnelRole[user.role] %>">
-		</div>
-	</div>
+        <label for="role" class="col-sm-2 control-label">Department</label>
+        <div class="col-sm-10">
+			<input type="text" class="form-control" value="<%= PersonnelRole[person.role] %>" disabled>
+            <select action-payload data-type="Number" class="form-control" name="role">
+                <option value="" disabled selected>Select an option</option>
+                <% for (var i = 1; PersonnelRole[i]; i++ ) { %>
+                <option value="<%= i %>"><%= PersonnelRole[i] %></option>
+                <% } %>
+            </select>
+        </div>
+    </div>
 
 	<div class="form-group">
 		<label for="salary" class="col-sm-2 control-label">Salary</label>
 		<div class="col-sm-10">
-			<input type="number" class="form-control" name="salary" value="<%= user.salary %>">
+			<input type="number" action-payload data-type="Number" class="form-control" name="salary" value="<%= person.salary %>">
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="tel" class="col-sm-2 control-label">Telephone</label>
 		<div class="col-sm-10">
-			<input type="text" class="form-control" name="tel" value="<%= user.tel %>">
+			<input type="number" action-payload data-type="Number" class="form-control" name="tel" value="<%= person.tel %>">
 		</div>
 	</div>
 

@@ -17,8 +17,14 @@
         </div>
 
         <div class="title">Objectives</div>
+        <% var count = 0; %>
         <% personnelPage.users.forEach(function(obj) { %>
+            <% count = count + 1; %>
+            <% if (personnelPage.user.id) { %>
             <div class="objective" style="<%= personnelPage.user.id === obj.id ? 'background: #f1f1f1;': '' %>">
+            <% } else { %>
+            <div class="objective">
+            <% } %>
                 <a href="/personnel/view/<%= obj.id %>">
                     <span class="glyphicon glyphicon-tasks"></span>
                     <% if (personnelPage.user.id === obj.id) { %>
@@ -102,6 +108,6 @@
     <%- include('modal-layout', {
         viewId: 'add-user',
         viewName: 'Add User',
-        body: include(`personnel-forms/add-user`)
+        body: include(`personnel-forms/add-user`, { id: count+1})
     }); %>
 </div>
