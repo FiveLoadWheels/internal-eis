@@ -2,8 +2,10 @@ var express = require('express');
 var router = express.Router();
 var { isLogin, checkRole, checkPasswordConfirm } = require('./user');
 var { FinanceRecords } = require('../storage/models');
+var { PersonnelRole } = require('eis-thinking').datatypes;
 
 var records = require('../storage/__fake').records;
+var financeOnly = checkRole((fin, role) => role === PersonnelRole.Finanace);
 
 function allRecs(req, res, next) {
     FinanceRecords.findAll().then( (allRecords) => {
@@ -45,7 +47,7 @@ function findMore(req, res, next) {
     }
 }
 
-router.get('/', isLogin, allRecs, function(req, res, next) {
+router.get('/', isLogin, financeOnly, allRecs, function(req, res, next) {
     let { allRecords } = req;
     res.render('finance', {
         title: 'Finance Records',
@@ -55,7 +57,7 @@ router.get('/', isLogin, allRecs, function(req, res, next) {
     });
 });
 
-router.get('/search', isLogin, findID, findMore, function(req, res, next) {
+router.get('/search', isLogin, financeOnly, findID, findMore, function(req, res, next) {
     let { allRecords } = req;
     res.render('finance', {
         title: 'Finance Records',
@@ -65,7 +67,7 @@ router.get('/search', isLogin, findID, findMore, function(req, res, next) {
     });
 });
 
-router.post('/handle/:id', checkPasswordConfirm, (req, res) => {
+router.post('/handle/:id', financeOnly, checkPasswordConfirm, (req, res) => {
     console.log(req.body.payload);
     let action = req.body;
     switch (action.type) {

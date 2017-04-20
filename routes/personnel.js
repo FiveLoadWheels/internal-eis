@@ -92,10 +92,13 @@ function getOpList(req, res, next) {
     Operation.findAll().then(ops => {
         req.operations = ops.map(op => op.toJSON());
         console.log('ops', req.operations);
-        req.operations.forEach(op => {
-            op.user = users.find(u => u.id === op.uid);
+        Promise.all(req.operations.map(op => Users.findOne({ where: { account: op.uid } }))).then(users => {
+            users.forEach((u, i) => req.operations[i].user = u ? u.toJSON() : null);
+            req.operations = req.operations.filter(op => op.user);
+            next();
+        }).catch(err => {
+            next(err); console.error(err);
         });
-        next();
     }).catch(err => {
         next(err);
     });
