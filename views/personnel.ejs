@@ -14,8 +14,8 @@
             <button class="btn btn-default btn-sm"  data-toggle="modal" data-target="#add-user-modal">
                 Add New Users
             </button>
-        </div>
-
+        </div>  
+        
         <div class="title">Objectives</div>
         <% var count = 0; %>
         <% personnelPage.users.forEach(function(obj) { %>
@@ -46,8 +46,9 @@
             </div>
         <% }) %>
     </div>
-
+    
     <div class="content col-xs-9">
+        <% if (req.params.id) { %>
         <h1>User ID #<%= personnelPage.user.id %>: Summaries</h1>
 
         <h2>Procedure</h2>
@@ -91,6 +92,12 @@
                 </tbody>
             </table>
         </div>
+        <% } else { %>
+        <h1 style="color: #777; line-height: 100%; text-align: center; padding-top: 30%;">
+            <span class="glyphicon glyphicon-tasks"></span>
+        </h1>
+        <h2 style="color: #777; line-height: 100%; text-align: center;">Select one order...</h2>
+        <% } %>
     </div>
 
     <%- include('modal-layout', {
