@@ -1,6 +1,6 @@
 let stor = require('.');
 let models = require('./models');
-var { handleOrder, handleProduct, datatypes } = require('eis-thinking');
+var { handleOrder, handleProduct, datatypes } = require('eis-order-handling');
 var { OrderStatus, ProductStatus, PersonnelRole } = datatypes;
 let { createFakeOrder, createFakeProduct } = require('./__fake');
 var { sha1 } = require('../utils');

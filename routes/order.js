@@ -1,7 +1,7 @@
-/// <reference path="../node_modules/eis-thinking/index.d.ts" />
+/// <reference path="../node_modules/eis-order-handling/index.d.ts" />
 var express = require('express');
 var router = express.Router();
-var { handleOrder, datatypes } = require('eis-thinking');
+var { handleOrder, datatypes } = require('eis-order-handling');
 var { OrderStatus, ProductStatus, PersonnelRole, OperationTarget } = datatypes;
 var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var { isLogin, checkRole } = require('./user');
-var { datatypes } = require('eis-thinking');
+var { datatypes } = require('eis-order-handling');
 var { PersonnelRole } = datatypes;
 var stor = require('../storage');
 var { Accessory } = require('../storage/models');

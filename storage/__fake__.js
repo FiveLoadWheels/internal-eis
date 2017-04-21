@@ -1,5 +1,5 @@
-var datatypes = require('eis-thinking/lib/datatypes');
-var { handleOrder, handleProduct } = require('eis-thinking');
+var datatypes = require('eis-order-handling/lib/datatypes');
+var { handleOrder, handleProduct } = require('eis-order-handling');
 var { OrderStatus, ProductStatus, PersonnelRole } = datatypes;
 var { sha1 } = require('../utils');
 

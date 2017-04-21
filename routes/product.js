@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var { handleOrder, handleProduct, datatypes } = require('eis-thinking');
+var { handleOrder, handleProduct, datatypes } = require('eis-order-handling');
 var { OrderStatus, ProductStatus, PersonnelRole, OperationTarget } = datatypes;
 var { checkRole, isLogin, checkPasswordConfirm } = require('./user');
 

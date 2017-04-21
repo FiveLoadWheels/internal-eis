@@ -59,7 +59,7 @@ app.use('/set-dom', express.static(path.join(__dirname, 'node_modules/set-dom'))
 app.use('/toprogress', express.static(path.join(__dirname, 'node_modules/toprogress')));
 
 // TODO: Dirty patch!!!!
-let PersonnelRole = require('eis-thinking').datatypes.PersonnelRole;
+let PersonnelRole = require('eis-order-handling').datatypes.PersonnelRole;
 app.use((req, res, next) => {
   let render = res.render;
   res.render = function newRender(filePath, options, callback) {

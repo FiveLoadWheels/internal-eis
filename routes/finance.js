@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var { isLogin, checkRole, checkPasswordConfirm } = require('./user');
 var { FinanceRecords } = require('../storage/models');
-var { PersonnelRole } = require('eis-thinking').datatypes;
+var { PersonnelRole } = require('eis-order-handling').datatypes;
 
 // var records = require('../storage/__fake').records;
 var financeOnly = checkRole((fin, role) => role === PersonnelRole.Finanace);

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { checkPasswordConfirm, checkRole, isLogin } = require('./user');
-const { PersonnelRole, OperationTarget } = require('eis-thinking').datatypes;
+const { PersonnelRole, OperationTarget } = require('eis-order-handling').datatypes;
 const { Accessory, Supplier, Operation } = require('../storage/models');
 
 const productionOnly = checkRole((acc, role) => role === PersonnelRole.Production);

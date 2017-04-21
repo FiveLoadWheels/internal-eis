@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var { isLogin, checkRole, checkPasswordConfirm } = require('./user');
-var { datatypes } = require('eis-thinking');
+var { datatypes } = require('eis-order-handling');
 var { PersonnelRole, OperationTarget } = datatypes;
 var { Operation, Users } = require('../storage/models');
 var { sha1 } = require('../utils');

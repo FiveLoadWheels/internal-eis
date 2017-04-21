@@ -10,7 +10,7 @@
     "bootstrap": "^3.3.7",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
-    "eis-thinking": "git+https://github.com/FiveLoadWheels/eis-thinking.git",
+    "eis-order-handling": "git+https://github.com/FiveLoadWheels/eis-order-handling.git",
     "ejs": "~2.5.6",
     "express": "~4.15.2",
     "express-session": "^1.15.2",
