@@ -9,6 +9,8 @@ https://github.com/FiveLoadWheels/eis-order-handling.
 
 ## Install
 
+[Node.js](https://nodejs.org) & git are required to install & run the project.
+
 ```shell
     git clone https://github.com/FiveLoadWheels/internal-eis
     cd internal-eis
