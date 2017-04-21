@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var { sha1, RequestError } = require('../utils');
 var { Users } = require('../storage/models');
-var users = require('../storage/__fake').users;
+// var users = require('../storage/__fake').users;
 
 function getUser(req, res, next) {
   return Users.findOne({

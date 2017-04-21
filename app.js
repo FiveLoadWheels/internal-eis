@@ -18,8 +18,6 @@ var personnel = require('./routes/personnel');
 var productModel = require('./routes/productModel');
 var accessory = require('./routes/accessory');
 
-// require('./storage/devSync')();
-
 var app = express();
 
 // view engine setup

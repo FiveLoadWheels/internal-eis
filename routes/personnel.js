@@ -7,7 +7,7 @@ var { PersonnelRole, OperationTarget } = datatypes;
 var { Operation, Users } = require('../storage/models');
 var { sha1 } = require('../utils');
 
-var users = require('../storage/__fake').users;
+// var users = require('../storage/__fake').users;
 var hrOnly = checkRole((target, role) => role === PersonnelRole.HumanResource);
 
 function findUsers(req, res, next) {

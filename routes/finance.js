@@ -4,7 +4,7 @@ var { isLogin, checkRole, checkPasswordConfirm } = require('./user');
 var { FinanceRecords } = require('../storage/models');
 var { PersonnelRole } = require('eis-thinking').datatypes;
 
-var records = require('../storage/__fake').records;
+// var records = require('../storage/__fake').records;
 var financeOnly = checkRole((fin, role) => role === PersonnelRole.Finanace);
 
 function allRecs(req, res, next) {

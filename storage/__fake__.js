@@ -38,15 +38,15 @@ let records = [
     createFinanceRec(888888, 'sales', 888888, '1234567890'),
 ];
 
-exports.products = products;
-exports.orders = orders;
 // exports.products = products;
 // exports.orders = orders;
-exports.users = users;
-exports.records = records;  
-exports.operations = [];
-exports.createFakeOrder = createFakeOrder;
-exports.createFakeProduct = createFakeProduct;
+// exports.products = products;
+// exports.orders = orders;
+// exports.users = users;
+// exports.records = records;  
+// exports.operations = [];
+// exports.createFakeOrder = createFakeOrder;
+// exports.createFakeProduct = createFakeProduct;
 
 
 /** @returns {datatypes.IOrder} */
