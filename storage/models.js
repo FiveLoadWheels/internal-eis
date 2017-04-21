@@ -6,7 +6,8 @@ const Sequelize = require('sequelize');
 // });
 
 let sequelize = new Sequelize('eis_internal', 'root', 'godtoknow', {
-    host: '158.182.109.232',
+    // host: '158.182.109.232',
+    host: '127.0.0.1',
     dialect: 'mysql'
 });
 
