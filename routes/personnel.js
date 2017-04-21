@@ -89,7 +89,7 @@ router.post('/handle/:id', hrOnly, checkPasswordConfirm, (req, res) => {
 });
 
 function getOpList(req, res, next) {
-    Operation.findAll().then(ops => {
+    Operation.findAll({ order: [['ctime', 'DESC']] }).then(ops => {
         req.operations = ops.map(op => op.toJSON());
         console.log('ops', req.operations);
         Promise.all(req.operations.map(op => Users.findOne({ where: { account: op.uid } }))).then(users => {

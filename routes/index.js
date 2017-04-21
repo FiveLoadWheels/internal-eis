@@ -9,7 +9,7 @@ var { Operation, Order } = require('../storage/models');
 var { getRoleScope } = require('./order');
 
 function getOwnOps(req, res, next) {
-  Operation.findAll({ where: { uid: req.session.user.account } }).then(ops => {
+  Operation.findAll({ where: { uid: req.session.user.id }, order:[['ctime', 'DESC']] }).then(ops => {
     req.operations = ops;
     next();
   }).catch(err => next(err));
