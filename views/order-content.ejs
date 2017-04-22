@@ -1,0 +1,77 @@
+<h1>Order #<%= order.id %></h1>
+
+<h2>Procedure & Actions</h2>
+<div class="card">
+    <div class="panel panel-default">
+        <div class="panel-heading">Current Status</div>
+        <div class="panel-body">
+            <% for (let i = 1; OrderStatus[i]; ++i) { %>
+                <%
+                let color = i <= order.status ? '#3c763d' : '#999999';
+                let statusName = `<span style="color: ${color}">` + addSpace(OrderStatus[i]) + '</span>';
+                %>
+                <%- i === order.status ? `<b>${statusName}</b>` : statusName %> → 
+            <% } %> .
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Action(s) for Current Order</div>
+        <div class="panel-body">
+            <i style="color: #999"><%= !order.availableActions.length ? 'Nothing to do' : '' %></i>
+            <% order.availableActions.forEach(function(action) { %>
+                <button 
+                    class="btn btn-success <%= action.disabled ? 'disabled' : '' %>"
+                    data-toggle="<%= action.disabled ? 'tooltip' : 'modal' %>"
+                    data-target="#<%= actionTypeToId(action.id) + '-modal' %>"
+                    title="<%= action.disabled ? action.disabled : '' %>"
+                    data-placement="top"
+                    data-key="<%= 'action-btn-' + (action.viewName).replace(/ /g, '') %>" >
+                    <%= action.viewName %>
+                </button>
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+<h2>Products</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <td>#</td>
+            <td>Status</td>
+            <td>Detail</td>
+        </thead>
+
+        <tbody>
+            <% order.products.forEach((product) => { %>
+                <tr>
+                    <td><%= product.id %></td>
+                    <td><%= orderPage.ProductStatus[product.status] %></td>
+                    <td>
+                        <a href="/product/view/<%= product.id %>">Detail</a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<h2>Term</h2>
+
+<%
+    let daysLimit = 7;
+    let ctime = order.ctime;
+    console.log('ctime', order);
+    let daysAgo = ctime + (daysLimit * 24 * 3600 * 1000);
+    let now = Date.now();
+    let timePercent = (((now - ctime) / (daysAgo - ctime)) * 100).toFixed(2);
+    let daysLeft = (daysLimit * (1 - timePercent / 100)).toFixed(2);
+%>
+
+<div><%= timePercent %>% time spent, <%= daysLeft %> days left</div>
+<div class="progress">
+<div class="progress-bar" role="progressbar" aria-valuenow="<%= timePercent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= timePercent %>%;">
+    <span class="sr-only"><%= timePercent %>% Complete</span>
+</div>

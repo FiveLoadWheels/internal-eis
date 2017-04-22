@@ -1,3 +1,7 @@
+<%
+    const Modal = importComp(include, 'modal-layout');
+%>
+
 <link rel="stylesheet" href="/stylesheets/finance.css">
 <div class="FinancePage clearfix default-list-view" full-height>
     <div class="siderbar col-xs-3">
@@ -145,16 +149,12 @@
         </div>
     </div>
 
-    <%- include('modal-layout', {
-        viewId: 'add-record',
-        viewName: 'Add Record',
-        body: include(`finance-forms/add-record`, {id: 0 })
-    }); %>
+    <%- Modal({ viewId: 'add-record', viewName: 'Add Record' }) %>
+        <%- include(`finance-forms/add-record`, {id: 0 }) %>
+    <%- Modal.end() %>
 
-    <%- include('modal-layout', {
-        viewId: 'modify-record',
-        viewName: 'Modify Record',
-        body: include(`finance-forms/modify-record`)
-    }); %>
+    <%- Modal({ viewId: 'modify-record', viewName: 'Modify Record' }); %>
+        <%- include(`finance-forms/modify-record`) %>
+    <%- Modal.end() %>
 
 </div>

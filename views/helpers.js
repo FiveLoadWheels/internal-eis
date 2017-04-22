@@ -17,6 +17,18 @@ module.exports = {
             ss = date.getSeconds()
         
         return `${YYYY}/${xx(MM)}/${xx(DD)} ${xx(hh)}:${xx(mm)}:${xx(ss)}`;
+    },
+
+    importComp(include, viewPath) {
+        function Component(option) {
+            return include(viewPath, Object.assign({ layout: 'start' }, option));
+        }
+
+        function end(option) {
+            return include(viewPath, Object.assign({ layout: 'end' }, option));
+        }
+
+        return Object.assign(Component, { end });
     }
 }
 

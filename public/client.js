@@ -41,6 +41,10 @@ function renderSubmit(form) {
     xhr.onerror = (err) => alert(err);
 }
 
+function sleep(timeout) {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 app.on('click', 'a[href]', (e) => {
     let a = e.target.tagName.toLowerCase() === 'a' ? $(e.target) : $(e.target).parents('a');
     let href = a.attr('href');
@@ -56,6 +60,15 @@ app.on('click', 'a[href]', (e) => {
 window.onpopstate = (e) => {
     render(location.href);
 };
+
+// ====== Bootstrap ======
+
+window.addEventListener('mount', (e) => {
+    if (e.target.dataset.toggle === 'tooltip') {
+        console.log('Init tooltip', e.target);
+        $(e.target).tooltip();
+    }
+}, true);
 
 // ====== OrderPageController ======
 
@@ -87,7 +100,7 @@ app.on('click', '.FinancePage .modifyRec', (e) => {
 
 });
 window.addEventListener('mount', (e) => {
-    $('#fin-table').bootstrapTable();
+    $.fn.bootstrapTable && $('#fin-table').bootstrapTable();
 }, true);
 
 // ====== Helpers ======
@@ -165,3 +178,10 @@ var JSONTypes = {
     Boolean: Boolean,
     DateTime: Date.parse.bind(Date)
 }
+
+// ====== Initializaion ======
+
+// dispatch first mount event on document root
+let initList = Array.from(document.querySelectorAll('[id],[data-key]'));
+let mountEvent = new CustomEvent('mount');
+initList.forEach(el => el.dispatchEvent(mountEvent));

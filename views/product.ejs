@@ -1,28 +1,28 @@
+<%
+    const FilterBox = importComp(include, 'filter-box');
+    const View = 'objective/view';
+    const Sidebar = importComp(include, 'objective/sidebar');
+    const SidebarItem = importComp(include, 'objective/sidebar-item');
+    const Content = importComp(include, 'objective/content');
+    const NullHint = importComp(include, 'objective/null-hint');
+    const ActionModals = importComp(include, 'action-modals');
+
+    const ProductContent = importComp(include, 'product-content');
+%>
+
 <link rel="stylesheet" href="/stylesheets/product.css">
 <div class="ProductPage clearfix" full-height>
-        <div class="sidebar col-xs-3">
-
-        <div class="form-group login-form">
-            <div class="input-group">
-                <div class="input-group-addon">
-                    Product #
-                </div>
-                <input class="form-control getById" placeholder="Product ID" value="<%= _query.filter ? productPage.product.id : '' %>">
-            </div>
-        </div>
+    <%- Sidebar() %>
+        <%- FilterBox({ tip: 'Product #', value: _query.filter ? productPage.product.id : '' }) %>
 
         <div class="title">Objectives</div>
         <% let pid = productPage.product ? productPage.product.id : 0; %>
         <% productPage.objectives.forEach(function(obj) { %>
-            <div class="objective" style="<%= pid === obj.id ? 'background: #f1f1f1;': '' %>">
-                <a href="/product/view/<%= obj.id %>">
-                    <span class="glyphicon glyphicon-tasks"></span>
-                    <% if (pid === obj.id) { %>
-                        <b>Product #<%= obj.id %></b>
-                    <% } else { %>
-                        Product #<%= obj.id %>
-                    <% } %>
-                </a>
+            <%- SidebarItem({
+                caption: 'Product #' + obj.id,
+                selected: obj.id === pid,
+                link: '/product/view/' + obj.id
+            }) %>
                 <ul>
                     <li>
                         <span class="glyphicon glyphicon-time"></span>
@@ -30,112 +30,27 @@
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-stats"></span>
-                        Status: <%= addSpace(obj.statusName) %>
+                        Status: <%= addSpace(obj.statusName || 'Unknown') %>
                     </li>
                 </ul>
-            </div>
+            <%- SidebarItem.end() %>
         <% }) %>
-    </div>
+    <%- Sidebar.end() %>
 
-    <div class="content col-xs-9">
+    <%- Content() %>
         <% if (pid) { %>
-            <h1>Product #<%= productPage.product.id %></h1>
-
-            <h2>Details</h2>
-            <div class="card">
-                <div class="" style="padding-top: 8px;">
-                    Model Type: <b><%= productPage.product.productModel.modelName %></b>
-                </div>
-                <div class="" style="padding-top: 8px;">
-                    Total Price: <b>HKD <%=
-                        productPage.product.productModel.primaryPrice + 
-                        productPage.product.accessories.map(acc => acc.purchasePrice).reduce((a,b) => a + b)
-                    %></b>
-                </div>
-                <div class="" style="padding-top: 8px;">
-                    Depends On:
-                    <a href="/order/view/<%= productPage.product.oid %>">
-                        <b>Order #<%= productPage.product.oid %></b>
-                    </a>
-                </div>
-            </div>
-
-            <h2>Procedure & Actions</h2>
-            <div class="card">
-                <h5>Current Status</h5>
-                <div class="panel panel-default" style="padding: 10px">
-                    <% for (let i = 1; productPage.ProductStatus[i]; ++i) { %>
-                        <%
-                        let color = i <= productPage.product.status ? 'text-success' : 'text-muted';
-                        let statusName = `<span class="${color}">` + addSpace(productPage.ProductStatus[i]) + '</span>';
-                        %>
-                        <%- i === productPage.product.status ? `<b>${statusName}</b>` : statusName %> → 
-                    <% } %>
-                </div>
-
-                <h5>Available Action(s)</h5>
-
-                <% productPage.product.availableActions.forEach(function(action) { %>
-                    <button class="btn btn-success"
-                    data-toggle="modal"
-                    data-target="#<%= actionTypeToId(action.id) + '-modal' %>"
-                    <%= action.disabled ? 'disabled' : '' %> >
-                        <%= action.viewName %>
-                    </button>
-
-                    <span class="text-danger"><%= action.disabled %></span>
-                <% }) %>
-            </div>
-
-            <h2>Accessories</h2>
-
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <td>#</td>
-                        <td>Model Name</td>
-                        <td>Quantity</td>
-                        <td>Pirce</td>
-                        <td>Detail</td>
-                    </thead>
-
-                    <tbody>
-                        <% productPage.product.accessories.forEach((acc) => { %>
-                            <tr>
-                                <td><%= acc.type %></td>
-                                <td><%= acc.modelName %></td>
-                                <td><%= acc.quantity %></td>
-                                <td><%= acc.purchasePrice %></td>
-                                <td>
-                                    <a href="/accessory/view/<%= acc.id %>">Detail</a>
-                                </td>
-                            </tr>
-                        <% });%>
-                    </tbody>
-                </table>
-            </div>
+            <%- ProductContent({ product: productPage.product, ProductStatus: productPage.ProductStatus }) %>
         <% } else { %>
-            <h1 style="color: #777; line-height: 100%; text-align: center; padding-top: 30%;">
-                <span class="glyphicon glyphicon-tasks"></span>
-            </h1>
-            <h2 style="color: #777; line-height: 100%; text-align: center;">Select one product...</h2>
+            <%- NullHint({tip: 'Select one product...'}) %>
         <% } %>
-    </div>
+    <%- Content.end() %>
 
-    <%-
-    pid && productPage.product.availableActions.map(a => {
-        try {
-            return include('modal-layout', {
-                viewId: actionTypeToId(a.id),
-                viewName: a.viewName,
-                body: include(`product-forms/${actionTypeToId(a.id)}`, { id: productPage.product.id })
-            });
-        }
-        catch (e) {
-            console.error('product.ejs: error:', e);
-            return '';
-        }
-    }).join('');
-    %>
+
+    <% if (pid) { %>
+        <%- ActionModals({
+            handleId: productPage.product.id,
+            actions: productPage.product.availableActions,
+            formPath: 'product-forms' }) %>
+    <% } %>
 
 </div>

@@ -1,0 +1,75 @@
+<h1>Product #<%= product.id %></h1>
+
+<h2>Details</h2>
+<div class="card">
+    <div class="" style="padding-top: 8px;">
+        Model Type: <b><%= product.productModel.modelName %></b>
+    </div>
+    <div class="" style="padding-top: 8px;">
+        Total Price: <b>HKD <%=
+            product.productModel.primaryPrice + 
+            product.accessories.map(acc => acc.purchasePrice).reduce((a,b) => a + b)
+        %></b>
+    </div>
+    <div class="" style="padding-top: 8px;">
+        Depends On:
+        <a href="/order/view/<%= product.oid %>">
+            <b>Order #<%= product.oid %></b>
+        </a>
+    </div>
+</div>
+
+<h2>Procedure & Actions</h2>
+<div class="card">
+    <h5>Current Status</h5>
+    <div class="panel panel-default" style="padding: 10px">
+        <% for (let i = 1; ProductStatus[i]; ++i) { %>
+            <%
+            let color = i <= product.status ? 'text-success' : 'text-muted';
+            let statusName = `<span class="${color}">` + addSpace(ProductStatus[i]) + '</span>';
+            %>
+            <%- i === product.status ? `<b>${statusName}</b>` : statusName %> → 
+        <% } %>
+    </div>
+
+    <h5>Available Action(s)</h5>
+
+    <% product.availableActions.forEach(function(action) { %>
+        <button class="btn btn-success"
+        data-toggle="modal"
+        data-target="#<%= actionTypeToId(action.id) + '-modal' %>"
+        <%= action.disabled ? 'disabled' : '' %> >
+            <%= action.viewName %>
+        </button>
+
+        <span class="text-danger"><%= action.disabled %></span>
+    <% }) %>
+</div>
+
+<h2>Accessories</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <td>#</td>
+            <td>Model Name</td>
+            <td>Quantity</td>
+            <td>Pirce</td>
+            <td>Detail</td>
+        </thead>
+
+        <tbody>
+            <% product.accessories.forEach((acc) => { %>
+                <tr>
+                    <td><%= acc.type %></td>
+                    <td><%= acc.modelName %></td>
+                    <td><%= acc.quantity %></td>
+                    <td><%= acc.purchasePrice %></td>
+                    <td>
+                        <a href="/accessory/view/<%= acc.id %>">Detail</a>
+                    </td>
+                </tr>
+            <% });%>
+        </tbody>
+    </table>
+</div>

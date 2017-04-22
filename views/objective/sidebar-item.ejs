@@ -1,0 +1,13 @@
+<% if (layout === 'start') { %>
+    <div class="objective" style="<%= selected ? 'background: #f1f1f1;': '' %>">
+        <a href="<%= link %>">
+            <span class="glyphicon glyphicon-tasks"></span>
+            <% if (selected) { %>
+                <b><%= caption %></b>
+            <% } else { %>
+                <%= caption %>
+            <% } %>
+        </a>
+<% } else { %>
+    </div>
+<% } %>

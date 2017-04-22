@@ -5,7 +5,7 @@ const Sequelize = require('sequelize');
     // storage: __dirname + '/../test.db'
 // });
 
-let sequelize = new Sequelize('eis_internal', 'root', 'godtoknow', {
+let sequelize = new Sequelize('eis_internal', 'root', '', {
     // host: '158.182.109.232',
     host: '127.0.0.1',
     dialect: 'mysql'

@@ -52,11 +52,11 @@ app.use(session({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// bootstrap and jquery
-app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap')));
-app.use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery')));
-app.use('/set-dom', express.static(path.join(__dirname, 'node_modules/set-dom')));
-app.use('/toprogress', express.static(path.join(__dirname, 'node_modules/toprogress')));
+// static npm packages
+let frontEnds = [ 'bootstrap', 'jquery', 'set-dom', 'toprogress' ]
+frontEnds.forEach(f => {
+  app.use(`/${f}`, express.static(path.join(__dirname, `node_modules/${f}`)));
+});
 
 // TODO: Dirty patch!!!!
 let PersonnelRole = require('eis-order-handling').datatypes.PersonnelRole;

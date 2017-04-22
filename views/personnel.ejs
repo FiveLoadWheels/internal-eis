@@ -1,3 +1,7 @@
+<%
+    const Modal = importComp(include, 'modal-layout');
+%>
+
 <link rel="stylesheet" href="/stylesheets/personnel.css">
 <div class="PersonnelPage clearfix" full-height>
     <div class="sidebar col-xs-3">
@@ -36,11 +40,11 @@
                 <ul>
                     <li>
                         <span class="glyphicon glyphicon-time"></span>
-                        Create at: <%= obj.ctime %>
+                        Create at: <%= tsToString(obj.ctime) %>
                     </li>
                     <li>
                         <span class="glyphicon glyphicon-stats"></span>
-                        Dept: <%= PersonnelRole[obj.role] %>
+                        Dept: <%= addSpace(PersonnelRole[obj.role]) %>
                     </li>
                 </ul>
             </div>
@@ -100,21 +104,15 @@
         <% } %>
     </div>
 
-    <%- include('modal-layout', {
-        viewId: 'modify-user',
-        viewName: 'Modify User',
-        body: include(`personnel-forms/modify-user`, { id: personnelPage.user.id, person: personnelPage.user })
-    }); %>
+    <%- Modal({ viewId: 'modify-user', viewName: 'Modify User' }) %>
+        <%- include(`personnel-forms/modify-user`, { id: personnelPage.user.id, person: personnelPage.user }) %>
+    <%- Modal.end() %>
 
-    <%- include('modal-layout', {
-        viewId: 'delete-user',
-        viewName: 'Delete User',
-        body: include(`personnel-forms/delete-user`, { id: personnelPage.user.id })
-    }); %>
+    <%- Modal({ viewId: 'delete-user', viewName: 'Delete User' }) %>
+        <%- include(`personnel-forms/delete-user`, { id: personnelPage.user.id }) %>
+    <%- Modal.end() %>
 
-    <%- include('modal-layout', {
-        viewId: 'add-user',
-        viewName: 'Add User',
-        body: include(`personnel-forms/add-user`, { id: count+1})
-    }); %>
+    <%- Modal({ viewId: 'add-user', viewName: 'Add User' }) %>
+        <%- include(`personnel-forms/add-user`, { id: count + 1 }) %>
+    <%- Modal.end() %>
 </div>

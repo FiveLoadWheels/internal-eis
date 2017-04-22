@@ -1,0 +1,11 @@
+<% const Modal = importComp(include, 'modal-layout');
+    actions.forEach(a => {
+    try { %>
+        <%- Modal({ viewId: actionTypeToId(a.id), viewName: a.viewName }) %>
+            <%- include(`${formPath}/${actionTypeToId(a.id)}`, { id: handleId }) %>
+        <%- Modal.end() %>
+<%  } catch (e) {
+        console.error('ActionModal: error:', e);
+    }
+});
+%>
