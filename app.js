@@ -6,17 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var ejs = require('ejs');
+var debug = require('debug')('App');
 var fs = require('fs');
 const { R_OK } = fs.constants;
-
-var index = require('./routes/index');
-var user = require('./routes/user');
-var order = require('./routes/order');
-var product = require('./routes/product');
-var finance = require('./routes/finance');
-var personnel = require('./routes/personnel');
-var productModel = require('./routes/productModel');
-var accessory = require('./routes/accessory');
 
 var app = express();
 
@@ -76,21 +68,33 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   Object.assign(res.locals, require('./views/helpers'));
   next();
-})
-
-app.get('/debug', (req, res) => {
-  res.type('application/json');
-  res.send(JSON.stringify(require('./storage/__fake'), null, 4));
 });
 
-app.use('/', index);
-app.use('/user', user);
-app.use('/order', order);
-app.use('/product', product);
-app.use('/finance', finance);
-app.use('/personnel', personnel);
-app.use('/productModel', productModel);
-app.use('/accessory', accessory);
+debug('Routes:');
+const routesDir = path.join(__dirname, '/routes');
+fs.readdirSync(routesDir).forEach(p => {
+  if (path.extname(p) !== '.js') {
+    debug('%s is not a js file, skipped', p);
+    return;
+  }
+  let routeName = path.basename(p, '.js');
+  // special index route
+  if (routeName === 'index') routeName = '';
+  try {
+    let route = require(path.join(routesDir, p));
+    let isRouter = typeof route === 'function';
+    isRouter = isRouter || (route.get && route.post && route.all);
+    if (isRouter) {
+      debug('Using route: %s as /%s', p, routeName);
+      app.use('/' + routeName, route);
+    }
+    else {
+      debug('%s seems not a router module, skipped');
+    }
+  } catch (e) {
+    debug('failed to require %s, skipped');
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
